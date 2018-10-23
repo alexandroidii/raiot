@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!--
+    source: https://android.jlelse.eu/the-complete-android-splash-screen-guide-c7db82bce565
+    author: Elvis Chidera
+    date: 2017-12-05
+    -->
+    <style name="AppTheme.Launcher" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="android:colorPrimaryDark">@android:color/white</item>
+    </style>
+
+</resources>
