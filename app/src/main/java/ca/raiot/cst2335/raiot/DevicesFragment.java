@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
+
+
 public class DevicesFragment extends Fragment {
     public DevicesFragment() {
         // Required empty public constructor

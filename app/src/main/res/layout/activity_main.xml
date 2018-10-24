@@ -24,6 +24,13 @@
 
     </FrameLayout>
 
+    <!--
+    source: https://www.simplifiedcoding.net/bottom-navigation-android-example/
+    author: Belal Khan
+    Date: 2018-01-23
+    -->
+
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
