@@ -7,10 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-
-
-public class DevicesFragment extends Fragment {
-    public DevicesFragment() {
+public class AddDeviceFragment extends Fragment {
+    public AddDeviceFragment() {
         // Required empty public constructor
     }
 
@@ -18,7 +16,7 @@ public class DevicesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_devices, container, false);
+        return inflater.inflate(R.layout.fragment_add_device, container, false);
     }
 
 }
