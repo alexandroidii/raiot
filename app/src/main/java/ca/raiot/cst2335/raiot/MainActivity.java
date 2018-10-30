@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -21,19 +23,69 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    //test
+    /*
+        https://resocoder.com/2017/11/03/floating-action-menu-no-3rd-party-library-quick-tutorial-xamarin-android-code/
+
+        https://stackoverflow.com/questions/30699302/android-design-support-library-expandable-floating-action-buttonfab-menu
+
+
+        */
+    private static boolean isFabOpen;
+    private FloatingActionButton autoAddFab;
+    private FloatingActionButton manualAddFab;
+    private FloatingActionButton addDeviceFab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         loadFragment(new DevicesFragment());
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
+
+        addDeviceFab = (FloatingActionButton) findViewById(R.id.addDeviceFAB);
+        autoAddFab = (FloatingActionButton) findViewById(R.id.autoAddDeviceFAB);
+        manualAddFab = (FloatingActionButton) findViewById(R.id.manualAddDeviceFAB);
+
+        addDeviceFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isFabOpen){
+                    hideFABMenu();
+                }else{
+                    showFabMenu();
+                }
+
+            }
+        });
+
+        autoAddFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               /* Robert, you can call your new activity that will
+                 automatically add the devices here.  Copy what I did in the
+                 manualAddFab.setOnClickListener.*/
+
+                //loadFragment(new <YOUR CLASS HERE>())
+
+
+                hideFABMenu();
+
+            }
+        });
+
+        manualAddFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadFragment(new AddDeviceFragment());
+                hideFABMenu();
+            }
+        });
     }
 
 
@@ -71,6 +123,30 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             return true;
         }
         return false;
+    }
+
+    private void showFabMenu() {
+        isFabOpen = true;
+
+        addDeviceFab.animate().rotation(360f);
+        autoAddFab.animate()
+                .translationY(-getResources().getDimension(R.dimen.standard_105))
+                .rotation(0f);
+        manualAddFab.animate()
+                .translationY(-getResources().getDimension(R.dimen.standard_55))
+                .rotation(0f);
+
+    }
+
+    private void hideFABMenu() {
+        isFabOpen = false;
+
+        addDeviceFab.animate().rotation(-360f);
+        autoAddFab.animate()
+                .translationY(0);
+        manualAddFab.animate()
+                .translationY(0);
+
     }
 
 
