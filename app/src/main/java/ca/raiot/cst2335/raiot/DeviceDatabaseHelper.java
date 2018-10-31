@@ -11,18 +11,19 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Devices.db";
     private static final int VERSION_NUM = 1;
     public static final String KEY_ID = "id";
+    public static final String KEY_REF = "ref";
     public static final String KEY_NAME = "name";
-    public static final String KEY_DESCRIPTION = "description";
-    public static final String KEY_ICON = "icon";
-    public static final String KEY_TYPE = "type";
+    public static final String KEY_LOCATION = "location";
+    public static final String KEY_STATUS = "status";
+
     public static final String TABLE_NAME = "Devices";
 
     private static final String SQL_CREATE_ENTRIES =
-            "create table " + TABLE_NAME + " (" + KEY_ID + " integer primary key autoincrement, "
-                    + KEY_NAME + " text "
-                    + KEY_DESCRIPTION + " text "
-                    + KEY_ICON + " text "
-                    + KEY_TYPE + " text)";
+            "CREATE TABLE " + TABLE_NAME + " (" + KEY_ID + " integer primary key autoincrement, "
+                    + KEY_REF + " text ,"
+                    + KEY_NAME + " text ,"
+                    + KEY_LOCATION + " text, "
+                    + KEY_STATUS + " text)";
 
     private static final String SQL_DROP_ENTRIES = "drop table if exists " + TABLE_NAME;
 
