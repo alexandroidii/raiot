@@ -112,7 +112,7 @@ public class JsonFragment extends Fragment {
                         device.put("ref", ref_id);
 //                        // adding device to device list
                         deviceList.add(device);
-                        //   publishProgress(progress);
+                        publishProgress(progress);
                         jsonProgress(progress);
                     }
                 } catch (final JSONException e) {
