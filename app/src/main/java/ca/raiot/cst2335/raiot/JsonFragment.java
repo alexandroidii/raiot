@@ -1,14 +1,16 @@
 package ca.raiot.cst2335.raiot;
 
+import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -23,23 +25,43 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class JsonActivity extends AppCompatActivity {
+public class JsonFragment extends Fragment {
 
-    protected static final String ACTIVITY_NAME = "1234 JsonActivity";
+    protected static final String ACTIVITY_NAME = "1234 JsonFragment";
 
     ArrayList<HashMap<String, String>> deviceList = new ArrayList<>();
     private ListView listview;
     int progress;
     ProgressBar progressBar;
 
+    private FragmentActivity listener;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof Activity) {
+            this.listener = (FragmentActivity) context;
+        }
+    }
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_json);
+    public JsonFragment(){
 
-        listview = (ListView) findViewById(R.id.listView);
-        progressBar = (ProgressBar) findViewById(R.id.ProgressBar);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_json, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+
+        super.onActivityCreated(savedInstanceState);
+
+        listview = (ListView) listener.findViewById(R.id.listView);
+        progressBar = (ProgressBar) listener.findViewById(R.id.ProgressBar);
         progressBar.setVisibility(View.VISIBLE);
 
 
@@ -52,7 +74,7 @@ public class JsonActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(JsonActivity.this, "Json Data is downloading", Toast.LENGTH_LONG).show();
+            Toast.makeText(listener, "Json Data is downloading", Toast.LENGTH_LONG).show();
 
         }
 
@@ -94,10 +116,10 @@ public class JsonActivity extends AppCompatActivity {
                     }
                 } catch (final JSONException e) {
                     Log.i(ACTIVITY_NAME, "Json parsing error: " + e.getMessage());
-                    runOnUiThread(new Runnable() {
+                    listener.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(),
+                            Toast.makeText(listener.getApplicationContext(),
                                     "Json parsing error: " + e.getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
@@ -107,10 +129,10 @@ public class JsonActivity extends AppCompatActivity {
 
             } else {
                 Log.i(ACTIVITY_NAME, "Couldn't get json from server.");
-                runOnUiThread(new Runnable() {
+                listener.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(listener.getApplicationContext(),
                                 "Couldn't get json from server. Check LogCat for possible errors!",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -140,7 +162,7 @@ public class JsonActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            ListAdapter adapter = new SimpleAdapter(JsonActivity.this, deviceList, R.layout.adapter_view_layout, new String[]{"name", "status", "location", "ref"},
+            ListAdapter adapter = new SimpleAdapter(listener, deviceList, R.layout.adapter_view_layout, new String[]{"name", "status", "location", "ref"},
                     new int[]{R.id.device, R.id.status, R.id.location, R.id.ref}); //get layout id
 
             listview.setAdapter(adapter);

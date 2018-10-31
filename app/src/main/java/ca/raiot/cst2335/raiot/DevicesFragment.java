@@ -81,7 +81,9 @@ public class DevicesFragment extends Fragment {
                  manualAddFab.setOnClickListener.*/
 
                 //loadFragment(new <YOUR CLASS HERE>())
-
+                listener.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout, new JsonFragment())
+                        .commit();
 
                 hideFABMenu();
 
