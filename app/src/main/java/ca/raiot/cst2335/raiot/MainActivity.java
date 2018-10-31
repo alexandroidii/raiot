@@ -1,25 +1,16 @@
 package ca.raiot.cst2335.raiot;
 
-import android.content.Context;
+import android.animation.Animator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Switch;
-import android.widget.TextView;
-
-import java.util.ArrayList;
+import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -34,6 +25,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private FloatingActionButton autoAddFab;
     private FloatingActionButton manualAddFab;
     private FloatingActionButton addDeviceFab;
+    private LinearLayout llManualAddFab;
+    private LinearLayout llAutoAddFab;
+    private LinearLayout llAddFAB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,45 +43,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
 
-        addDeviceFab = (FloatingActionButton) findViewById(R.id.addDeviceFAB);
-        autoAddFab = (FloatingActionButton) findViewById(R.id.autoAddDeviceFAB);
-        manualAddFab = (FloatingActionButton) findViewById(R.id.manualAddDeviceFAB);
-
-        addDeviceFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isFabOpen){
-                    hideFABMenu();
-                }else{
-                    showFabMenu();
-                }
-
-            }
-        });
-
-        autoAddFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               /* Robert, you can call your new activity that will
-                 automatically add the devices here.  Copy what I did in the
-                 manualAddFab.setOnClickListener.*/
-
-                //loadFragment(new <YOUR CLASS HERE>())
-
-
-                hideFABMenu();
-
-            }
-        });
-
-        manualAddFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadFragment(new AddDeviceFragment());
-                hideFABMenu();
-            }
-        });
     }
+
 
 
     @Override
@@ -124,30 +82,4 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         return false;
     }
-
-    private void showFabMenu() {
-        isFabOpen = true;
-
-        addDeviceFab.animate().rotation(360f);
-        autoAddFab.animate()
-                .translationY(-getResources().getDimension(R.dimen.standard_105))
-                .rotation(0f);
-        manualAddFab.animate()
-                .translationY(-getResources().getDimension(R.dimen.standard_55))
-                .rotation(0f);
-
-    }
-
-    private void hideFABMenu() {
-        isFabOpen = false;
-
-        addDeviceFab.animate().rotation(-360f);
-        autoAddFab.animate()
-                .translationY(0);
-        manualAddFab.animate()
-                .translationY(0);
-
-    }
-
-
 }
