@@ -1,16 +1,20 @@
 package ca.raiot.cst2335.raiot;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class DeviceDatabaseHelper extends SQLiteOpenHelper {
     protected static final String ACTIVITY_NAME = "1234 DeviceDatabaseHelper";
 
     private static final String DATABASE_NAME = "Devices.db";
     private static final int VERSION_NUM = 1;
-    public static final String KEY_ID = "id";
     public static final String KEY_REF = "ref";
     public static final String KEY_NAME = "name";
     public static final String KEY_LOCATION = "location";
@@ -19,8 +23,7 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "Devices";
 
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + TABLE_NAME + " (" + KEY_ID + " integer primary key autoincrement, "
-                    + KEY_REF + " text ,"
+            "CREATE TABLE " + TABLE_NAME + " (" + KEY_REF + " integer primary key, "
                     + KEY_NAME + " text ,"
                     + KEY_LOCATION + " text, "
                     + KEY_STATUS + " text)";
@@ -43,4 +46,35 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
         Log.i(ACTIVITY_NAME, "Calling onUpgrade(), oldVersion = " + oldVersion
                 + " newVersion = " + newVersion);
     }
+
+    public boolean addDevice(HashMap<String,String> device) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_REF, device.get("ref"));
+        contentValues.put(KEY_NAME, device.get("name"));
+        contentValues.put(KEY_LOCATION, device.get("location"));
+        contentValues.put(KEY_STATUS, device.get("status"));
+
+        Log.i(ACTIVITY_NAME, "addData: Adding device " + device.get("name") + " to " + TABLE_NAME);
+
+        long result = db.insert(TABLE_NAME, null, contentValues);
+
+        //if date as inserted incorrectly it will return -1
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /* Returns all the devices from database
+     * @return
+             */
+    public Cursor getAllSavedDevices() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME;
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
 }

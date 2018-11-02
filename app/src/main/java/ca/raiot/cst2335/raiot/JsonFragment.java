@@ -28,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -92,7 +93,7 @@ public class JsonFragment extends Fragment {
         });
 
         GetDevices getDevices = new GetDevices();
-        getDevices.execute();
+        getDevices.execute("https://connected2.homeseer.com/JSON?request=getstatus&location1=android&user=robert@lange.ca&pass=Myeasslake$");
 
     }
 
@@ -105,12 +106,11 @@ public class JsonFragment extends Fragment {
         }
 
         @Override
-        protected String doInBackground(String... arg0) {
+        protected String doInBackground(String... urls) {
             HttpHandler sh = new HttpHandler();
             // Making a request to url and getting response
-            String url = "http://www.lange.ca:8080/JSON?user=adroid&password=androiduser&request=getstatus&location1=android";
-            //    String jsonStr = sh.makeServiceCall(url);
-            String jsonStr = "{\"Name\":\"HomeSeer Devices\",\"Version\":\"1.0\",\"Devices\":[{\"ref\":990,\"name\":\"A_DiningRoom Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":0,\"status\":\"Off\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(-62135578800000)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/off.gif\",\"voice_command\":\"\",\"misc\":4864},{\"ref\":991,\"name\":\"A_FamilyRoom Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":100,\"status\":\"On\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(1540823155629)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/on.gif\",\"voice_command\":\"\",\"misc\":4864},{\"ref\":992,\"name\":\"A_Kitchen Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":100,\"status\":\"On\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(1540940163675)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/on.gif\",\"voice_command\":\"\",\"misc\":4864},{\"ref\":989,\"name\":\"A_LivingRoom Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":0,\"status\":\"Off\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(-62135578800000)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/off.gif\",\"voice_command\":\"\",\"misc\":4864}]}";
+            String jsonStr = sh.makeServiceCall(urls[0]);
+          //  String jsonStr = "{\"Name\":\"HomeSeer Devices\",\"Version\":\"1.0\",\"Devices\":[{\"ref\":990,\"name\":\"A_DiningRoom Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":0,\"status\":\"Off\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(-62135578800000)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/off.gif\",\"voice_command\":\"\",\"misc\":4864},{\"ref\":991,\"name\":\"A_FamilyRoom Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":100,\"status\":\"On\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(1540823155629)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/on.gif\",\"voice_command\":\"\",\"misc\":4864},{\"ref\":992,\"name\":\"A_Kitchen Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":100,\"status\":\"On\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(1540940163675)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/on.gif\",\"voice_command\":\"\",\"misc\":4864},{\"ref\":989,\"name\":\"A_LivingRoom Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":0,\"status\":\"Off\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(-62135578800000)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/off.gif\",\"voice_command\":\"\",\"misc\":4864}]}";
             Log.i(ACTIVITY_NAME, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
@@ -138,7 +138,7 @@ public class JsonFragment extends Fragment {
                         device.put("ref", ref_id);
 //                        // adding device to device list
                         deviceList.add(device);
-                        //   publishProgress(progress);
+                        publishProgress(progress);
                         jsonProgress(progress);
                     }
                 } catch (final JSONException e) {
