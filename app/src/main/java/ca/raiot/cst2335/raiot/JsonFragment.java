@@ -2,6 +2,8 @@ package ca.raiot.cst2335.raiot;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
@@ -11,11 +13,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -30,21 +36,29 @@ public class JsonFragment extends Fragment {
     protected static final String ACTIVITY_NAME = "1234 JsonFragment";
 
     ArrayList<HashMap<String, String>> deviceList = new ArrayList<>();
+    ArrayList<HashMap<String, String>> saveDeviceList = new ArrayList<>();
+
+    private FloatingActionButton saveDevicesFAB;
+    private LinearLayout llSaveDevicesFAB;
+
     private ListView listview;
     int progress;
     ProgressBar progressBar;
 
     private FragmentActivity listener;
 
+    private DeviceDatabaseHelper deviceDatabaseHelper;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof Activity) {
             this.listener = (FragmentActivity) context;
+            deviceDatabaseHelper = new DeviceDatabaseHelper(listener);
         }
     }
 
-    public JsonFragment(){
+    public JsonFragment() {
 
     }
 
@@ -61,9 +75,21 @@ public class JsonFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         listview = (ListView) listener.findViewById(R.id.listView);
+
         progressBar = (ProgressBar) listener.findViewById(R.id.ProgressBar);
         progressBar.setVisibility(View.VISIBLE);
 
+
+        saveDevicesFAB = (FloatingActionButton) listener.findViewById(R.id.saveDevicesFAB);
+        llSaveDevicesFAB = (LinearLayout) listener.findViewById(R.id.llSaveDevicesFAB);
+
+        saveDevicesFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // implement code to save fields to the database.
+
+            }
+        });
 
         GetDevices getDevices = new GetDevices();
         getDevices.execute();
@@ -83,7 +109,7 @@ public class JsonFragment extends Fragment {
             HttpHandler sh = new HttpHandler();
             // Making a request to url and getting response
             String url = "http://www.lange.ca:8080/JSON?user=adroid&password=androiduser&request=getstatus&location1=android";
-        //    String jsonStr = sh.makeServiceCall(url);
+            //    String jsonStr = sh.makeServiceCall(url);
             String jsonStr = "{\"Name\":\"HomeSeer Devices\",\"Version\":\"1.0\",\"Devices\":[{\"ref\":990,\"name\":\"A_DiningRoom Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":0,\"status\":\"Off\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(-62135578800000)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/off.gif\",\"voice_command\":\"\",\"misc\":4864},{\"ref\":991,\"name\":\"A_FamilyRoom Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":100,\"status\":\"On\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(1540823155629)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/on.gif\",\"voice_command\":\"\",\"misc\":4864},{\"ref\":992,\"name\":\"A_Kitchen Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":100,\"status\":\"On\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(1540940163675)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/on.gif\",\"voice_command\":\"\",\"misc\":4864},{\"ref\":989,\"name\":\"A_LivingRoom Lights\",\"location\":\"Android\",\"location2\":\"Lighting\",\"value\":0,\"status\":\"Off\",\"device_type_string\":\"\",\"last_change\":\"\\/Date(-62135578800000)\\/\",\"relationship\":0,\"hide_from_view\":false,\"associated_devices\":[],\"device_type\":{\"Device_API\":0,\"Device_API_Description\":\"No API\",\"Device_Type\":0,\"Device_Type_Description\":\"Type 0\",\"Device_SubType\":0,\"Device_SubType_Description\":\"\"},\"device_image\":\"\",\"UserNote\":\"\",\"UserAccess\":\"Any\",\"status_image\":\"/images/HomeSeer/status/off.gif\",\"voice_command\":\"\",\"misc\":4864}]}";
             Log.i(ACTIVITY_NAME, "Response from url: " + jsonStr);
 
@@ -163,8 +189,39 @@ public class JsonFragment extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            ListAdapter adapter = new SimpleAdapter(listener, deviceList, R.layout.adapter_view_layout, new String[]{"name", "status", "location", "ref"},
-                    new int[]{R.id.device, R.id.status, R.id.location, R.id.ref}); //get layout id
+
+            // create custom adapter and when the view is set, set the id to "checkbox" + ref #
+            ListAdapter adapter = new DeviceAdapter(listener); //get layout id
+
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                   /*
+                    https://stackoverflow.com/questions/40295528/get-id-of-checkbox-inside-of-listview-item-in-onitemclick-listener
+                    */
+
+                    HashMap<String, String> currentDevice = new HashMap<>();
+
+                    TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
+                    TextView status = (TextView) view.findViewById(R.id.status);
+                    TextView location = (TextView) view.findViewById(R.id.location);
+                    TextView ref = (TextView) view.findViewById(R.id.reference);
+                    CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+
+                    currentDevice.put("name", deviceName.getText().toString());
+                    currentDevice.put("status", status.getText().toString());
+                    currentDevice.put("location", location.getText().toString());
+                    currentDevice.put("ref", ref.getText().toString());
+
+                    if (checkBox.isChecked()) {
+                        checkBox.setChecked(false);
+                        saveDeviceList.remove(currentDevice);
+                    } else {
+                        checkBox.setChecked(true);
+                        saveDeviceList.add(currentDevice);
+                    }
+                }
+            });
 
             listview.setAdapter(adapter);
 
@@ -172,16 +229,55 @@ public class JsonFragment extends Fragment {
         }
     }
 
-    private class ChatAdapter extends ArrayAdapter<String> {
+    private class DeviceAdapter extends ArrayAdapter<HashMap<String, String>> {
 
-        public ChatAdapter(Context ctx) {
+        Cursor cursor = null;
+
+        public DeviceAdapter(Context ctx) {
             super(ctx, 0);
         }
+
         @Override
         public int getCount() {
             return deviceList.size();
         }
 
+        @Override
+        public HashMap<String, String> getItem(int position) {
+            return deviceList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+
+
+            long id = Long.parseLong(deviceList.get(position).get("ref"));
+
+            return id;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            LayoutInflater inflater = listener.getLayoutInflater();
+
+            View adapterViewLayout = inflater.inflate(R.layout.adapter_view_layout, null);
+
+            HashMap<String, String> currentDevice = deviceList.get(position);
+
+            TextView deviceName = (TextView) adapterViewLayout.findViewById(R.id.deviceName);
+            TextView status = (TextView) adapterViewLayout.findViewById(R.id.status);
+            TextView location = (TextView) adapterViewLayout.findViewById(R.id.location);
+            TextView reference = (TextView) adapterViewLayout.findViewById(R.id.reference);
+
+            deviceName.setText(currentDevice.get("name"));
+            status.setText(currentDevice.get("status"));
+            location.setText(currentDevice.get("location"));
+            reference.setText(currentDevice.get("ref"));
+
+            return adapterViewLayout;
+
+        }
 
 
     }

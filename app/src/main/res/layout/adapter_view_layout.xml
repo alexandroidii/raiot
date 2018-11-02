@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:weightSum="100">
-
+<!--
+    https://stackoverflow.com/questions/11610023/click-is-not-working-on-the-listitem-listview-android
+    -->
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="0dp"
@@ -15,12 +17,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_weight="20"
-        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        android:focusable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/referenceLabel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/device"
+        android:id="@+id/deviceName"
         android:layout_width="164dp"
         android:layout_height="23dp"
         android:layout_marginStart="8dp"
@@ -30,7 +33,7 @@
         android:gravity="start"
         android:text="device"
         android:textColor="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintBottom_toBottomOf="@+id/referenceLabel"
         app:layout_constraintStart_toEndOf="@+id/checkBox"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,7 +47,7 @@
         android:gravity="start"
         android:text="status"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintStart_toEndOf="@+id/referenceLabel"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -57,7 +60,7 @@
         app:layout_constraintTop_toBottomOf="@+id/status" />
 
     <TextView
-        android:id="@+id/ref"
+        android:id="@+id/reference"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
@@ -66,32 +69,32 @@
         app:layout_constraintTop_toBottomOf="@+id/location" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/statusLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="start"
         android:text="Status"
-        app:layout_constraintStart_toEndOf="@+id/device"
+        app:layout_constraintStart_toEndOf="@+id/deviceName"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/locationLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
         android:text="Location"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toStartOf="@+id/statusLabel"
+        app:layout_constraintTop_toBottomOf="@+id/statusLabel" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/referenceLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
         android:text="Reference"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintStart_toStartOf="@+id/statusLabel"
+        app:layout_constraintTop_toBottomOf="@+id/locationLabel" />
 
 </android.support.constraint.ConstraintLayout>
