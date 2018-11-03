@@ -2,7 +2,6 @@ package ca.raiot.cst2335.raiot;
 
 import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -87,29 +84,36 @@ public class JsonFragment extends Fragment {
         saveDevicesFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // implement code to save fields to the database.
 
+                for (int i = 0; i < saveDeviceList.size(); i++) {
+                    deviceDatabaseHelper.addDevice(saveDeviceList.get(i));
+                }
             }
         });
 
         GetDevices getDevices = new GetDevices();
+//        getDevices.execute(new String[]{"https://connected2.homeseer.com/JSON?request=getstatus&location1=android&user=robert@lange.ca&pass=Myeasslake$",
+//                "Json Data is downloading... Please wait!"});
         getDevices.execute("https://connected2.homeseer.com/JSON?request=getstatus&location1=android&user=robert@lange.ca&pass=Myeasslake$");
 
     }
 
     public class GetDevices extends AsyncTask<String, Integer, String> {
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(listener, "Json Data is downloading", Toast.LENGTH_LONG).show();
+            publishProgress(10); //give some indication of progress
 
         }
 
         @Override
         protected String doInBackground(String... urls) {
-            HttpHandler sh = new HttpHandler();
+            //Toast.makeText(listener, urls[1], Toast.LENGTH_LONG).show();
+
+            HttpHandler httpHandler = new HttpHandler();
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(urls[0]);
+            String jsonStr = httpHandler.makeServiceCall(urls[0]);
             Log.i(ACTIVITY_NAME, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
@@ -126,10 +130,10 @@ public class JsonFragment extends Fragment {
                         String status = hsd.getString("status");
                         String location = hsd.getString("location");
                         String ref_id = hsd.getString("ref");
-//
+
 //                        // tmp hash map for single device
                         HashMap<String, String> device = new HashMap<>();
-//
+
 //                        // adding each child node to HashMap key => value
                         device.put("name", name);
                         device.put("status", status);
@@ -170,8 +174,10 @@ public class JsonFragment extends Fragment {
         @Override
         public void onProgressUpdate(Integer... progress) {
             Log.i(ACTIVITY_NAME, "" + progress[0]);
-            progressBar.setVisibility(View.VISIBLE);
-            progressBar.setProgress(progress[0]);
+            if (progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setProgress(progress[0]);
+            }
         }
 
 
@@ -190,7 +196,7 @@ public class JsonFragment extends Fragment {
 
 
             // create custom adapter and when the view is set, set the id to "checkbox" + ref #
-            ListAdapter adapter = new DeviceAdapter(listener); //get layout id
+            ListAdapter adapter = new JsonDeviceAdapter(listener); //get layout id
 
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -224,15 +230,17 @@ public class JsonFragment extends Fragment {
 
             listview.setAdapter(adapter);
 
-            progressBar.setVisibility(View.INVISIBLE);
+            if (progressBar != null) {
+
+                progressBar.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
-    private class DeviceAdapter extends ArrayAdapter<HashMap<String, String>> {
+    private class JsonDeviceAdapter extends ArrayAdapter<HashMap<String, String>> {
 
-        Cursor cursor = null;
 
-        public DeviceAdapter(Context ctx) {
+        public JsonDeviceAdapter(Context ctx) {
             super(ctx, 0);
         }
 
@@ -260,7 +268,7 @@ public class JsonFragment extends Fragment {
 
             LayoutInflater inflater = listener.getLayoutInflater();
 
-            View adapterViewLayout = inflater.inflate(R.layout.adapter_view_layout, null);
+            View adapterViewLayout = inflater.inflate(R.layout.adapter_view_json_ayout, null);
 
             HashMap<String, String> currentDevice = deviceList.get(position);
 

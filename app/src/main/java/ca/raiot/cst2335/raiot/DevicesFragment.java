@@ -3,6 +3,7 @@ package ca.raiot.cst2335.raiot;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,16 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class DevicesFragment extends Fragment {
@@ -22,6 +32,7 @@ public class DevicesFragment extends Fragment {
 
 
     */
+    private ListView listView;
     private static boolean isFabOpen;
     private FloatingActionButton autoAddFab;
     private FloatingActionButton manualAddFab;
@@ -30,6 +41,8 @@ public class DevicesFragment extends Fragment {
     private LinearLayout llAutoAddFab;
     private LinearLayout llAddFAB;
     private FragmentActivity listener;
+    private DeviceDatabaseHelper deviceDatabaseHelper;
+    private Cursor cursor;
 
     public DevicesFragment() {
         // Required empty public constructor
@@ -40,6 +53,8 @@ public class DevicesFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof Activity) {
             this.listener = (FragmentActivity) context;
+            deviceDatabaseHelper = new DeviceDatabaseHelper(listener);
+
         }
     }
 
@@ -54,12 +69,56 @@ public class DevicesFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        listView = (ListView)listener.findViewById(R.id.deviceListView);
         addDeviceFab = (FloatingActionButton) listener.findViewById(R.id.addDeviceFAB);
         autoAddFab = (FloatingActionButton) listener.findViewById(R.id.autoAddDeviceFAB);
         manualAddFab = (FloatingActionButton) listener.findViewById(R.id.manualAddDeviceFAB);
         llManualAddFab = (LinearLayout) listener.findViewById(R.id.llManualAddDeviceFAB);
         llAutoAddFab = (LinearLayout) listener.findViewById(R.id.llAutoAddDeviceFAB);
         llAddFAB = (LinearLayout) listener.findViewById(R.id.llAddFAB);
+
+        // create custom adapter and when the view is set, set the id to "checkbox" + ref #
+        ListAdapter adapter = new DevicesFragment.DatabaseDeviceAdapter(listener); //get layout id
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                   /*
+                    https://stackoverflow.com/questions/40295528/get-id-of-checkbox-inside-of-listview-item-in-onitemclick-listener
+                    */
+
+
+
+                HashMap<String, String> currentDevice = new HashMap<>();
+
+                TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
+                TextView status = (TextView) view.findViewById(R.id.status);
+                TextView location = (TextView) view.findViewById(R.id.location);
+                TextView ref = (TextView) view.findViewById(R.id.reference);
+                CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("name", deviceName.getText().toString());
+                bundle.putString("status", status.getText().toString());
+                bundle.putString("location", location.getText().toString());
+                bundle.putString("ref", ref.getText().toString());
+
+                ViewDeviceFragment viewDeviceFragment = new ViewDeviceFragment();
+
+                viewDeviceFragment.setArguments(bundle);
+
+                listener.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, viewDeviceFragment)
+                        .commit();
+
+
+            }
+        });
+
+        listView.setAdapter(adapter);
+
+
 
         addDeviceFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,5 +211,73 @@ public class DevicesFragment extends Fragment {
         });
 
     }
+
+    private class DatabaseDeviceAdapter extends ArrayAdapter<HashMap<String, String>> {
+
+        private ArrayList<HashMap<String, String>> deviceList = new ArrayList<>();
+
+        public DatabaseDeviceAdapter(Context ctx) {
+            super(ctx, 0);
+            cursor = deviceDatabaseHelper.getAllSavedDevices();
+            cursor.moveToFirst();
+
+            while (!cursor.isAfterLast()) {
+
+                HashMap<String, String> currentDevice = new HashMap<String, String>();
+
+                int columnIndex = 0;
+                currentDevice.put("ref", cursor.getString(columnIndex++));
+                currentDevice.put("name", cursor.getString(columnIndex++));
+                currentDevice.put("location", cursor.getString(columnIndex++));
+                currentDevice.put("status", cursor.getString(columnIndex++));
+                deviceList.add(currentDevice);
+                cursor.moveToNext();
+            }
+        }
+
+    @Override
+    public int getCount() {
+        return deviceList.size();
+    }
+
+    @Override
+    public HashMap<String, String> getItem(int position) {
+        return deviceList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+
+
+        long id = Long.parseLong(deviceList.get(position).get("ref"));
+
+        return id;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        LayoutInflater inflater = listener.getLayoutInflater();
+
+        View adapterViewLayout = inflater.inflate(R.layout.adapter_view_json_ayout, null);
+
+        HashMap<String, String> currentDevice = deviceList.get(position);
+
+        TextView deviceName = (TextView) adapterViewLayout.findViewById(R.id.deviceName);
+        TextView status = (TextView) adapterViewLayout.findViewById(R.id.status);
+        TextView location = (TextView) adapterViewLayout.findViewById(R.id.location);
+        TextView reference = (TextView) adapterViewLayout.findViewById(R.id.reference);
+
+        deviceName.setText(currentDevice.get("name"));
+        status.setText(currentDevice.get("status"));
+        location.setText(currentDevice.get("location"));
+        reference.setText(currentDevice.get("ref"));
+
+        return adapterViewLayout;
+
+    }
+
+
+}
 
 }

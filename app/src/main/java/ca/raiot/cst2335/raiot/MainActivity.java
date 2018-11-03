@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     /*
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private LinearLayout llManualAddFab;
     private LinearLayout llAutoAddFab;
     private LinearLayout llAddFAB;
+    private HashMap<String, String> currentDevice;
 
 
     @Override
@@ -81,5 +84,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             return true;
         }
         return false;
+    }
+
+    public HashMap<String, String> getCurrentDevice(){
+        return currentDevice;
+    }
+
+    public void setCurrentDevice(HashMap<String, String> currentDevice){
+        this.currentDevice =currentDevice;
     }
 }

@@ -10,6 +10,8 @@ import android.util.Log;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static java.sql.Types.REF;
+
 public class DeviceDatabaseHelper extends SQLiteOpenHelper {
     protected static final String ACTIVITY_NAME = "1234 DeviceDatabaseHelper";
 
@@ -74,7 +76,28 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME;
         Cursor data = db.rawQuery(query, null);
+        Log.i(ACTIVITY_NAME, "getAllSavedDevices: Fetching all device from " + TABLE_NAME);
         return data;
     }
 
+    /* Returns selected device from database
+     * @return
+     */
+    public Cursor getSelectedDevice(String REF) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + KEY_REF  + " = " + REF;
+        Cursor data = db.rawQuery(query, null);
+        Log.i(ACTIVITY_NAME, "getSelectedDevices: Fetching specific device " + REF + " from " + TABLE_NAME);
+        return data;
+    }
+
+    /* Delete the selected device from database */
+
+    public void deleteDevice(String REF){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE * FROM " + TABLE_NAME + " WHERE " + KEY_REF  + " = " + REF;
+        Cursor data = db.rawQuery(query, null);
+        Log.i(ACTIVITY_NAME, "deleteDevice: Deleting device " + REF + " from " + TABLE_NAME);
+        db.execSQL(query);
+    }
 }
