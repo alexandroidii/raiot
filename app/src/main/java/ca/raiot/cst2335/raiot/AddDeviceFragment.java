@@ -10,8 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.HashMap;
 
 
 public class AddDeviceFragment extends Fragment {
@@ -19,6 +23,11 @@ public class AddDeviceFragment extends Fragment {
     private FloatingActionButton saveDeviceFAB;
     private LinearLayout llSaveFAB;
     private FragmentActivity listener;
+    private DeviceDatabaseHelper deviceDatabaseHelper;
+    private EditText etDeviceName;
+    private EditText etRefNumber;
+    private EditText etLocation;
+    private EditText etStatus;
 
     public AddDeviceFragment() {
         // Required empty public constructor
@@ -29,6 +38,7 @@ public class AddDeviceFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof Activity) {
             this.listener = (FragmentActivity) context;
+            deviceDatabaseHelper = new DeviceDatabaseHelper(listener);
         }
     }
 
@@ -45,17 +55,33 @@ public class AddDeviceFragment extends Fragment {
         saveDeviceFAB = (FloatingActionButton) listener.findViewById(R.id.saveDeviceFAB);
         llSaveFAB = (LinearLayout) listener.findViewById(R.id.llSaveFAB);
 
+        etDeviceName = (EditText) listener.findViewById(R.id.etDeviceName);
+        etRefNumber = (EditText) listener.findViewById(R.id.etRefNumber);
+        etLocation = (EditText) listener.findViewById(R.id.etLocation);
+        etStatus = (EditText) listener.findViewById(R.id.etStatus);
+
+
+
+
         saveDeviceFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // implement code to save fields to the database.
+                HashMap<String, String> newDevice = new HashMap<>();
+
+                newDevice.put("name", etDeviceName.getText().toString());
+                newDevice.put("ref", etRefNumber.getText().toString());
+                newDevice.put("location", etLocation.getText().toString());
+                newDevice.put("status", etStatus.getText().toString());
+                deviceDatabaseHelper.addDevice(newDevice, listener);
+
+                Toast.makeText(listener, "Saving new device to database", Toast.LENGTH_LONG).show();
 
             }
         });
 
         Spinner deviceTypeDropDown = listener.findViewById(R.id.typeSpinner);
 
-        String[] types = new String[]{"Light", "Fan", "Garage Door", "Camera"};
+        String[] types = new String[]{"Choose a Type", "Light", "Fan", "Garage Door", "Camera"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(listener, android.R.layout.simple_list_item_1, types);
 

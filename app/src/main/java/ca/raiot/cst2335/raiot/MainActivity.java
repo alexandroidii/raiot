@@ -1,16 +1,22 @@
 package ca.raiot.cst2335.raiot;
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -23,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
         */
+
+    protected static final String ACTIVITY_NAME = "1234 MainActivity";
+
     private static boolean isFabOpen;
     private FloatingActionButton autoAddFab;
     private FloatingActionButton manualAddFab;
@@ -47,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigation.setOnNavigationItemSelectedListener(this);
 
     }
-
 
 
     @Override
@@ -80,17 +88,57 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.frame_layout, fragment)
+                    .addToBackStack(null)
                     .commit();
             return true;
         }
         return false;
     }
 
-    public HashMap<String, String> getCurrentDevice(){
+    public HashMap<String, String> getCurrentDevice() {
         return currentDevice;
     }
 
-    public void setCurrentDevice(HashMap<String, String> currentDevice){
-        this.currentDevice =currentDevice;
+    public void setCurrentDevice(HashMap<String, String> currentDevice) {
+        this.currentDevice = currentDevice;
+    }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+/*
+    https://stackoverflow.com/questions/14275627/how-to-go-back-to-previous-fragment-on-pressing-manually-back-button-of-individu
+    */
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.helpMenuItem:
+                Log.i(ACTIVITY_NAME, "Help Menu icon selected");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, new HelpFragment())
+                        .addToBackStack(null)
+                        .commit();
+                break;
+        }
+        return true;
+    }
+
+
+    /*
+    * Source: https://stackoverflow.com/questions/14275627/how-to-go-back-to-previous-fragment-on-pressing-manually-back-button-of-individu
+    * Author: Suhas
+    * Date: 2016-06-25
+    *
+    * */
+    @Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() == 1) {
+            moveTaskToBack(false);
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 }
