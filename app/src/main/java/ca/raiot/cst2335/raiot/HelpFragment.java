@@ -34,7 +34,6 @@ public class HelpFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         String content = null;
         try {
-
             InputStream file = getActivity().getAssets().open("helptext.txt");
             int size = file.available();
             byte[] buffer = new byte[size];
