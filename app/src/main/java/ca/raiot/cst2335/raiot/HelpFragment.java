@@ -21,7 +21,7 @@ public class HelpFragment extends Fragment {
     public HelpFragment() {
         // Required empty public constructor
     }
-    //https://stackoverflow.com/questions/27092827/how-to-read-text-file-from-assets-in-fragment
+    //Source: https://stackoverflow.com/questions/27092827/how-to-read-text-file-from-assets-in-fragment
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

@@ -118,6 +118,8 @@ public class JsonFragment extends Fragment {
             Toast.makeText(listener, preJsonToast, Toast.LENGTH_LONG).show();
         }
 
+        //Source: https://www.tutorialspoint.com/android/android_json_parser.htm
+
         @Override
         protected String doInBackground(String... urls) {
 

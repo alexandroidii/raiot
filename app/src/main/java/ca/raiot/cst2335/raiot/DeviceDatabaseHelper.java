@@ -17,7 +17,7 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
     protected static final String ACTIVITY_NAME = "1234 DeviceDatabaseHelper";
 
     private static final String DATABASE_NAME = "Devices.db";
-    private static final int VERSION_NUM = 1;
+    private static final int VERSION_NUM = 2;
     public static final String KEY_REF = "ref";
     public static final String KEY_NAME = "name";
     public static final String KEY_LOCATION = "location";
