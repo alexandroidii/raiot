@@ -110,6 +110,7 @@ public class DevicesFragment extends Fragment {
                 listener.getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.frame_layout, viewDeviceFragment)
+                        .addToBackStack(null)
                         .commit();
 
 
@@ -142,6 +143,7 @@ public class DevicesFragment extends Fragment {
                 //loadFragment(new <YOUR CLASS HERE>())
                 listener.getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout, new JsonFragment())
+                        .addToBackStack(null)
                         .commit();
 
                 hideFABMenu();
@@ -154,6 +156,7 @@ public class DevicesFragment extends Fragment {
             public void onClick(View view) {
                 listener.getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout, new AddDeviceFragment())
+                        .addToBackStack(null)
                         .commit();
                 hideFABMenu();
             }
