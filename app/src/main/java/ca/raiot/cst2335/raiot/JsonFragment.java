@@ -92,10 +92,7 @@ public class JsonFragment extends Fragment {
         });
 
         GetDevices getDevices = new GetDevices();
-//        getDevices.execute(new String[]{"https://connected2.homeseer.com/JSON?request=getstatus&location1=android&user=robert@lange.ca&pass=Myeasslake$",
-//                "Json Data is downloading... Please wait!"});
         getDevices.execute("https://connected2.homeseer.com/JSON?request=getstatus&location1=android&user=robert@lange.ca&pass=Myeasslake$");
-
     }
 
     public class GetDevices extends AsyncTask<String, Integer, String> {
@@ -104,16 +101,17 @@ public class JsonFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             publishProgress(10); //give some indication of progress
-
+            Toast.makeText(listener, "Json Data is downloading... Please wait!", Toast.LENGTH_LONG).show();
         }
 
         @Override
         protected String doInBackground(String... urls) {
-            //Toast.makeText(listener, urls[1], Toast.LENGTH_LONG).show();
 
             HttpHandler httpHandler = new HttpHandler();
+
             // Making a request to url and getting response
             String jsonStr = httpHandler.makeServiceCall(urls[0]);
+
             Log.i(ACTIVITY_NAME, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
