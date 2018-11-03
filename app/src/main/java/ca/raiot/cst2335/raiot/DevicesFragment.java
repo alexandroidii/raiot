@@ -3,11 +3,14 @@ package ca.raiot.cst2335.raiot;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +82,41 @@ public class DevicesFragment extends Fragment {
 
         // create custom adapter and when the view is set, set the id to "checkbox" + ref #
         ListAdapter adapter = new DevicesFragment.DatabaseDeviceAdapter(listener); //get layout id
+
+        /*
+        * Source: https://stackoverflow.com/questions/8846707/how-to-implement-a-long-click-listener-on-a-listview
+        * Author: dinesh Sharma
+        * Date: 2012-01-13
+        * Comment: This breaks the code but this is a long press of the device pops up an alert
+        *           confirming a delete of the device in the database.
+        * */
+       /*
+
+       listView.setLongClickable(true);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(listener);
+                builder.setMessage("Do you want to delete this device?")
+                        .setTitle("Delete Device?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialogInterface, int id){
+                                deviceDatabaseHelper.deleteDevice(String.valueOf(id), listener);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialogInterface, int id){
+
+                            }
+                        })
+                        .show();
+
+
+                return true;
+            }
+        });*/
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -262,7 +300,7 @@ public class DevicesFragment extends Fragment {
 
         LayoutInflater inflater = listener.getLayoutInflater();
 
-        View adapterViewLayout = inflater.inflate(R.layout.adapter_view_json_ayout, null);
+        View adapterViewLayout = inflater.inflate(R.layout.adapter_view_devices_layout, null);
 
         HashMap<String, String> currentDevice = deviceList.get(position);
 

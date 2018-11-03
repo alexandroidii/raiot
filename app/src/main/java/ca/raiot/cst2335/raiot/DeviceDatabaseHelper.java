@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
                 + " newVersion = " + newVersion);
     }
 
-    public boolean addDevice(HashMap<String,String> device) {
+    public boolean addDevice(HashMap<String,String> device, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_REF, device.get("ref"));
@@ -63,8 +64,12 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
 
         //if date as inserted incorrectly it will return -1
         if (result == -1) {
+            Toast.makeText(context, "Failed to save new device to database", Toast.LENGTH_LONG).show();
+
             return false;
         } else {
+            Toast.makeText(context, "Succesfully saved new device to the database", Toast.LENGTH_LONG).show();
+
             return true;
         }
     }
@@ -93,7 +98,7 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
 
     /* Delete the selected device from database */
 
-    public void deleteDevice(String REF){
+    public void deleteDevice(String REF, Context context){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE * FROM " + TABLE_NAME + " WHERE " + KEY_REF  + " = " + REF;
         Cursor data = db.rawQuery(query, null);

@@ -86,12 +86,14 @@ public class JsonFragment extends Fragment {
             public void onClick(View view) {
 
                 for (int i = 0; i < saveDeviceList.size(); i++) {
-                    deviceDatabaseHelper.addDevice(saveDeviceList.get(i));
+                    deviceDatabaseHelper.addDevice(saveDeviceList.get(i), listener);
                 }
+                Toast.makeText(listener, "Saving new devices to database", Toast.LENGTH_LONG).show();
+
             }
         });
 
-        GetDevices getDevices = new GetDevices();
+        GetDevices getDevices = new GetDevices("Json Data is downloading... Please wait!");
         getDevices.execute("https://connected2.homeseer.com/JSON?request=getstatus&location1=android&user=robert@lange.ca&pass=Myeasslake$");
     }
 
@@ -100,14 +102,20 @@ public class JsonFragment extends Fragment {
         private String preJsonToast;
 
         public void setPreJsonToast(String toastMessage){
-
+            this.preJsonToast = preJsonToast;
         }
 
+        public GetDevices(){
+
+        }
+        public GetDevices(String preJsonToast){
+            this.preJsonToast = preJsonToast;
+        }
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             publishProgress(10); //give some indication of progress
-            Toast.makeText(listener, "Json Data is downloading... Please wait!", Toast.LENGTH_LONG).show();
+            Toast.makeText(listener, preJsonToast, Toast.LENGTH_LONG).show();
         }
 
         @Override
