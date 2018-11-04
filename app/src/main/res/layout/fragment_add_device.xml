@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tvDeviceName"
+        android:id="@+id/tvDeviceNameLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -29,10 +29,10 @@
         android:inputType="text|textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDeviceName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDeviceNameLabel" />
 
     <TextView
-        android:id="@+id/tvRef"
+        android:id="@+id/tvRefNumberLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -52,10 +52,10 @@
         android:inputType="text|textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRef" />
+        app:layout_constraintTop_toBottomOf="@+id/tvRefNumberLabel" />
 
     <TextView
-        android:id="@+id/tvLocation"
+        android:id="@+id/tvLocationLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -76,10 +76,10 @@
         android:inputType="text|textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/tvLocationLabel" />
 
     <TextView
-        android:id="@+id/tvStatus"
+        android:id="@+id/tvStatusLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
+        app:layout_constraintTop_toBottomOf="@+id/tvStatusLabel" />
 
     <TextView
         android:id="@+id/tvType"

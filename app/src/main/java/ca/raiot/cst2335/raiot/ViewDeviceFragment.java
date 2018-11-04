@@ -9,24 +9,33 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.HashMap;
 
 
 public class ViewDeviceFragment extends Fragment {
-    private FloatingActionButton toggleDevicestatusFAB;
-    private LinearLayout llToggleDevicestatusFAB;
+    private FloatingActionButton updateDeviceFAB;
     private FragmentActivity listener;
-
     private String ref;
-//    private String name;
-//    private String location;
     private String status;
+    private DeviceDatabaseHelper deviceDatabaseHelper;
+    private EditText etViewDeviceName;
+    private TextView tvRefNumber;
+    private EditText etViewLocation;
+    private Switch statusSwitch;
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof Activity) {
             this.listener = (FragmentActivity) context;
+            deviceDatabaseHelper = new DeviceDatabaseHelper(listener);
         }
     }
 
@@ -47,41 +56,74 @@ public class ViewDeviceFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         Bundle bundle = this.getArguments();
-
+        etViewDeviceName = (EditText) listener.findViewById(R.id.etViewDeviceName);
+        tvRefNumber = (TextView) listener.findViewById(R.id.tvRefNumber);
+        etViewLocation = (EditText) listener.findViewById(R.id.etViewLocation);
+        statusSwitch = (Switch) listener.findViewById(R.id.statusSwitch);
 
         if (bundle != null) {
             ref = bundle.getString("ref");
-//            name = bundle.getString("name");
-//            location = bundle.getString("location");
             status = bundle.getString("status");
+            etViewDeviceName.setText(bundle.getString("name"));
+            etViewLocation.setText(bundle.getString("location"));
+            tvRefNumber.setText(ref);
         }
 
+        statusSwitch.setChecked(status.equals("On"));
 
-        toggleDevicestatusFAB = (FloatingActionButton) listener.findViewById(R.id.toggleDeviceStatusFAB);
+        checkSwitch();
 
-        toggleDevicestatusFAB.setOnClickListener(new View.OnClickListener() {
+        updateDeviceFAB = (FloatingActionButton) listener.findViewById(R.id.updateDeviceFAB);
+
+        updateDeviceFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // implement code to save fields to the database.
-                JsonFragment jsonFragment = new JsonFragment();
+                HashMap<String, String> updatedDevice = new HashMap<>();
 
-                String state;
 
-                if (status.equals("on")){
-                    state = "off";
-                }else{
-                    state = "on";
-                }
 
-//                This isn't working'
-              /*      JsonFragment.GetDevices jsonRequest = jsonFragment.new GetDevices();
-                jsonRequest.execute(new String[]{"https://connected2.homeseer.com/JSON?request=controldevicebylabelandref=" + ref + "&label=" + state
-                        + "&user=robert@lange.ca&pass=Myeasslake$",
-                        "Changing status of light id " + ref + " to " + state + "... Please wait!"});*/
+                updatedDevice.put("name", etViewDeviceName.getText().toString());
+                updatedDevice.put("ref", tvRefNumber.getText().toString());
+                updatedDevice.put("location", etViewLocation.getText().toString());
+                updatedDevice.put("status", status);
+                deviceDatabaseHelper.updateDevice(updatedDevice, listener);
+
+                Toast.makeText(listener, "updating device in database", Toast.LENGTH_LONG).show();
+
+                //Robert, If there is a string we can send to the server to update the devices name and location we could use that here.
+
             }
         });
 
 
+    }
+
+    private void checkSwitch() {
+        /*  source: https://android--code.blogspot.com/2015/08/android-switch-button-listener.html
+            Author: Unknown
+            Date: 2015-08-22
+        */
+        statusSwitch = (Switch) listener.findViewById(R.id.statusSwitch);
+
+        statusSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                    @Override
+                                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                        JsonFragment jsonFragment = new JsonFragment(listener);
+                                                        String state;
+                                                        if (isChecked) {
+
+                                                            state = "On";
+                                                        } else {
+                                                            state = "Off";
+
+                                                        }
+                                                        JsonFragment.GetDevices jsonRequest = jsonFragment.new GetDevices("Changing status of light id " + ref + " to " + state + "... Please wait!");
+                                                        jsonRequest.execute("https://connected2.homeseer.com/JSON?request=controldevicebylabel&ref=" + ref + "&label=" + state + "&user=robert@lange.ca&pass=Myeasslake$");
+
+                                                    }
+                                                }
+        );
     }
 
 }

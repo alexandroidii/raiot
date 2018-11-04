@@ -74,6 +74,13 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean updateDevice(HashMap<String,String> device, Context context){
+
+        // create method to update device's Name and Location but not the ref or Status.
+
+        return true;
+    }
+
     /* Returns all the devices from database
      * @return
              */
@@ -100,9 +107,11 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteDevice(String REF, Context context){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE * FROM " + TABLE_NAME + " WHERE " + KEY_REF  + " = " + REF;
-        Cursor data = db.rawQuery(query, null);
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE " + KEY_REF  + " = " + REF;
+//        Cursor data = db.rawQuery(query, null);
         Log.i(ACTIVITY_NAME, "deleteDevice: Deleting device " + REF + " from " + TABLE_NAME);
         db.execSQL(query);
+        Toast.makeText(context, "Deleting device " + REF + " from " + TABLE_NAME, Toast.LENGTH_LONG).show();
+
     }
 }

@@ -33,7 +33,7 @@ public class JsonFragment extends Fragment {
 
     protected static final String ACTIVITY_NAME = "1234 JsonFragment";
 
-    ArrayList<HashMap<String, String>> deviceList = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> deviceList = new ArrayList<>();
     ArrayList<HashMap<String, String>> saveDeviceList = new ArrayList<>();
 
     private FloatingActionButton saveDevicesFAB;
@@ -58,6 +58,13 @@ public class JsonFragment extends Fragment {
 
     public JsonFragment() {
 
+    }
+
+    public JsonFragment(Context context) {
+        if (context instanceof Activity) {
+            this.listener = (FragmentActivity) context;
+            deviceDatabaseHelper = new DeviceDatabaseHelper(listener);
+        }
     }
 
     @Override
@@ -85,12 +92,12 @@ public class JsonFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(saveDeviceList.size() > 0 ){
+                if (saveDeviceList.size() > 0) {
                     Toast.makeText(listener, "Saving new devices to database", Toast.LENGTH_LONG).show();
                     for (int i = 0; i < saveDeviceList.size(); i++) {
                         deviceDatabaseHelper.addDevice(saveDeviceList.get(i), listener);
                     }
-                }else{
+                } else {
                     Toast.makeText(listener, "No devices saved", Toast.LENGTH_LONG).show();
                 }
             }
@@ -104,21 +111,25 @@ public class JsonFragment extends Fragment {
 
         private String preJsonToast;
 
-        public void setPreJsonToast(String toastMessage){
+        public void setPreJsonToast(String toastMessage) {
             this.preJsonToast = preJsonToast;
         }
 
-        public GetDevices(){
+        public GetDevices() {
 
         }
-        public GetDevices(String preJsonToast){
+
+        public GetDevices(String preJsonToast) {
             this.preJsonToast = preJsonToast;
         }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             publishProgress(10); //give some indication of progress
-            Toast.makeText(listener, preJsonToast, Toast.LENGTH_LONG).show();
+            if (preJsonToast != null) {
+                Toast.makeText(listener, preJsonToast, Toast.LENGTH_LONG).show();
+            }
         }
 
         //Source: https://www.tutorialspoint.com/android/android_json_parser.htm
@@ -212,40 +223,43 @@ public class JsonFragment extends Fragment {
             super.onPostExecute(result);
 
 
-            // create custom adapter and when the view is set, set the id to "checkbox" + ref #
             ListAdapter adapter = new JsonDeviceAdapter(listener); //get layout id
 
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (listview != null) {
+
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                    /*
                     https://stackoverflow.com/questions/40295528/get-id-of-checkbox-inside-of-listview-item-in-onitemclick-listener
                     */
 
-                    HashMap<String, String> currentDevice = new HashMap<>();
+                        HashMap<String, String> currentDevice = new HashMap<>();
 
-                    TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-                    TextView status = (TextView) view.findViewById(R.id.status);
-                    TextView location = (TextView) view.findViewById(R.id.location);
-                    TextView ref = (TextView) view.findViewById(R.id.reference);
-                    CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+                        TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
+                        TextView status = (TextView) view.findViewById(R.id.status);
+                        TextView location = (TextView) view.findViewById(R.id.location);
+                        TextView ref = (TextView) view.findViewById(R.id.reference);
+                        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
 
-                    currentDevice.put("name", deviceName.getText().toString());
-                    currentDevice.put("status", status.getText().toString());
-                    currentDevice.put("location", location.getText().toString());
-                    currentDevice.put("ref", ref.getText().toString());
+                        currentDevice.put("name", deviceName.getText().toString());
+                        currentDevice.put("status", status.getText().toString());
+                        currentDevice.put("location", location.getText().toString());
+                        currentDevice.put("ref", ref.getText().toString());
 
-                    if (checkBox.isChecked()) {
-                        checkBox.setChecked(false);
-                        saveDeviceList.remove(currentDevice);
-                    } else {
-                        checkBox.setChecked(true);
-                        saveDeviceList.add(currentDevice);
+                        if (checkBox.isChecked()) {
+                            checkBox.setChecked(false);
+                            saveDeviceList.remove(currentDevice);
+                        } else {
+                            checkBox.setChecked(true);
+                            saveDeviceList.add(currentDevice);
+                        }
                     }
-                }
-            });
+                });
 
-            listview.setAdapter(adapter);
+                listview.setAdapter(adapter);
+
+            }
 
             if (progressBar != null) {
 
@@ -304,6 +318,10 @@ public class JsonFragment extends Fragment {
         }
 
 
+    }
+
+    public ArrayList<HashMap<String, String>> getDeviceList() {
+        return deviceList;
     }
 }
 
