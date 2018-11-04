@@ -85,11 +85,14 @@ public class JsonFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                for (int i = 0; i < saveDeviceList.size(); i++) {
-                    deviceDatabaseHelper.addDevice(saveDeviceList.get(i), listener);
+                if(saveDeviceList.size() > 0 ){
+                    Toast.makeText(listener, "Saving new devices to database", Toast.LENGTH_LONG).show();
+                    for (int i = 0; i < saveDeviceList.size(); i++) {
+                        deviceDatabaseHelper.addDevice(saveDeviceList.get(i), listener);
+                    }
+                }else{
+                    Toast.makeText(listener, "No devices saved", Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(listener, "Saving new devices to database", Toast.LENGTH_LONG).show();
-
             }
         });
 
