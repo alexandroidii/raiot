@@ -1,45 +1,32 @@
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
-This is a help file This is a help file
+Welcome to RAIOT V1.0 - Robert, Alexander Internet Of Things.
+
+RAIOT was built from the ground up to give users a better experience with controlling their Internet of Things devices.
+
+When the application starts, it scans the IOT hub for devices to manage and control. It is assumed that the devices belong to a location specified as "Android".
+
+By pressing on the green "+" floating action button, two choices will be available - "Search Network - denoted by the magnify glass icon" and "Add Manually - denoted by the list icon".
+
+Search Network will issue a JSON request to the hub for devices which correspond to the given location - "Android" and a view will be generated for the user which includes a checkbox used to add to the local Sqlite database.
+
+As each item is selected in the view, the green "floppy disk icon" can then be selected to save the items in the Sqlite database.
+
+Should the user wish to add the devices manually, a dialog will be presented to the user where the specific information can be added manually. This option gives the user an opportunity to add the device as they wish.
+This means they can call the device any name that is desired. The only caveat is they must know the reference number of the device in the IOT hub for actual operational actions to take place.
+Below is the list of devices currently support in V1.0:
+
+Device Name         Reference Id
+--------------------------------------------------
+DiningRoom Light    990
+LivingRoom Light     989
+FamilyRoom Light    991
+Kitchen Light             992
+
+The greyed "Devices icon" on the base bar can be then selected to view the list of devices saved. With this view, by selected any particular device in the list allows the user to control the device.
+This selection brings up a view displaying the details of the device - Device Name, Reference Number of device, Location and status. The status icon acts as a slide switch which allows the user to turn on/off the device.
+While in the "Devices" screen, the user may elect to remove the device from the local database by long pressing the device. A dialog will appear as the user if they wish to remove the device from the local database.
+Select "Yes" removes the device. Selecting no dismisses the pop up confirmation and the device view is retained.
+
+Authors:
+
+Alexander Riccio and Robert Lange
+
