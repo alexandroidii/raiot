@@ -18,8 +18,8 @@ public class ViewDeviceFragment extends Fragment {
     private FragmentActivity listener;
 
     private String ref;
-    private String name;
-    private String location;
+//    private String name;
+//    private String location;
     private String status;
 
     @Override
@@ -51,8 +51,8 @@ public class ViewDeviceFragment extends Fragment {
 
         if (bundle != null) {
             ref = bundle.getString("ref");
-            name = bundle.getString("name");
-            location = bundle.getString("location");
+//            name = bundle.getString("name");
+//            location = bundle.getString("location");
             status = bundle.getString("status");
         }
 
@@ -73,10 +73,11 @@ public class ViewDeviceFragment extends Fragment {
                     state = "on";
                 }
 
-                    JsonFragment.GetDevices jsonRequest = jsonFragment.new GetDevices();
+//                This isn't working'
+              /*      JsonFragment.GetDevices jsonRequest = jsonFragment.new GetDevices();
                 jsonRequest.execute(new String[]{"https://connected2.homeseer.com/JSON?request=controldevicebylabelandref=" + ref + "&label=" + state
                         + "&user=robert@lange.ca&pass=Myeasslake$",
-                        "Changing status of light id " + ref + " to " + state + "... Please wait!"});
+                        "Changing status of light id " + ref + " to " + state + "... Please wait!"});*/
             }
         });
 
