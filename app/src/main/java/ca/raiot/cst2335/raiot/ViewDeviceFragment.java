@@ -88,9 +88,9 @@ public class ViewDeviceFragment extends Fragment {
                 updatedDevice.put("location", etViewLocation.getText().toString());
                 updatedDevice.put("status", status);
                 if (deviceDatabaseHelper.updateDevice(updatedDevice, listener)) {
-                    Toast.makeText(listener, "Device successfully updated", Toast.LENGTH_SHORT).show();
-                } else {
                     Toast.makeText(listener, "Failed to update device", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(listener, "Device successfully updated", Toast.LENGTH_SHORT).show();
                 }
 
 
