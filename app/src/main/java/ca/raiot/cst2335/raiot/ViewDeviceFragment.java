@@ -117,8 +117,10 @@ public class ViewDeviceFragment extends Fragment {
                                                         if (isChecked) {
 
                                                             state = "On";
+                                                            devHome();
                                                         } else {
                                                             state = "Off";
+                                                            devHome();
 
                                                         }
                                                         JsonFragment.GetDevices jsonRequest = jsonFragment.new GetDevices("Changing status of light id " + ref + " to " + state + "... Please wait!");
@@ -129,4 +131,11 @@ public class ViewDeviceFragment extends Fragment {
         );
     }
 
+    // handle to direct back to device list after selection change
+    private void devHome() {
+        listener.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout, new DevicesFragment())
+                .addToBackStack(null)
+                .commit();
+    }
 }
