@@ -91,6 +91,7 @@ public class DevicesFragment extends Fragment {
 
         GetDevices getDevices = new GetDevices("Updating Device Statuses... Please wait!");
         getDevices.execute("https://connected2.homeseer.com/JSON?request=getstatus&location1=android&user=robert@lange.ca&pass=Myeasslake$");
+
     }
 
     private void showFabMenu() {
@@ -336,6 +337,9 @@ public class DevicesFragment extends Fragment {
             super.onPostExecute(result);
 
             listView = (ListView) listener.findViewById(R.id.deviceListView);
+            View emptyDbListMessage = listener.findViewById(R.id.emptyDbList);
+            listView.setEmptyView(emptyDbListMessage);
+
             addDeviceFab = (FloatingActionButton) listener.findViewById(R.id.addDeviceFAB);
             autoAddFab = (FloatingActionButton) listener.findViewById(R.id.autoAddDeviceFAB);
             manualAddFab = (FloatingActionButton) listener.findViewById(R.id.manualAddDeviceFAB);

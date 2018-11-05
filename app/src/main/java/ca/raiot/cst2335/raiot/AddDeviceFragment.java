@@ -68,10 +68,10 @@ public class AddDeviceFragment extends Fragment {
             public void onClick(View view) {
                 HashMap<String, String> newDevice = new HashMap<>();
 
-                newDevice.put("name", etDeviceName.getText().toString());
-                newDevice.put("ref", etRefNumber.getText().toString());
-                newDevice.put("location", etLocation.getText().toString());
-                newDevice.put("status", etStatus.getText().toString());
+                newDevice.put(getString(R.string.deviceNameKey), etDeviceName.getText().toString());
+                newDevice.put(getString(R.string.deviceRefKey), etRefNumber.getText().toString());
+                newDevice.put(getString(R.string.deviceLocationKey), etLocation.getText().toString());
+                newDevice.put(getString(R.string.deviceStatusKey), etStatus.getText().toString());
                 deviceDatabaseHelper.addDevice(newDevice, listener);
 
                 Toast.makeText(listener, "Saving new device to database", Toast.LENGTH_LONG).show();

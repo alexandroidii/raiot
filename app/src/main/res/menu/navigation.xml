@@ -9,11 +9,11 @@
     <item
         android:id="@+id/navigation_schedules"
         android:icon="@drawable/ic_baseline_schedule_24px"
-        android:title="@string/title_addDevice" />
+        android:title="@string/title_schedule" />
 
     <item
         android:id="@+id/navigation_automation"
         android:icon="@drawable/ic_baseline_widgets_24px"
-        android:title="@string/title_schedule" />
+        android:title="@string/title_automation" />
 
 </menu>

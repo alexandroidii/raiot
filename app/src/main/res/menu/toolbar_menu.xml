@@ -8,7 +8,7 @@
         android:id="@+id/helpMenuItem"
         android:icon="@drawable/ic_baseline_help_outline_24px"
         android:orderInCategory="101"
-        android:title="Camera"
+        android:title="@string/title_help"
         app:showAsAction="always" />
 
 

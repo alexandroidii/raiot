@@ -2,6 +2,7 @@ package ca.raiot.cst2335.raiot;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -80,6 +81,16 @@ public class JsonFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         listview = (ListView) listener.findViewById(R.id.listView);
+
+        /*
+        * Source: https://stackoverflow.com/questions/5565451/display-no-item-message-in-listview
+        * Author: Joseph Earl
+        * Date: 2011-04-06
+        *
+        * */
+        View emptyJsonList = listener.findViewById(R.id.emptyJsonList);
+        listview.setEmptyView(emptyJsonList);
+
 
         progressBar = (ProgressBar) listener.findViewById(R.id.ProgressBar);
         progressBar.setVisibility(View.VISIBLE);
