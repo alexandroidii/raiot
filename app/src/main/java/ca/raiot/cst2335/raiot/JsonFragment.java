@@ -112,6 +112,12 @@ public class JsonFragment extends Fragment {
                 } else {
                     Toast.makeText(listener, "No devices saved", Toast.LENGTH_LONG).show();
                 }
+
+                listener.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, new DevicesFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
@@ -122,6 +128,8 @@ public class JsonFragment extends Fragment {
     public class GetDevices extends AsyncTask<String, Integer, String> {
 
         private String preJsonToast;
+        LinearLayout llSpinnerProgress = (LinearLayout)listener.findViewById(R.id.llSpinnerProgress);
+
 
         public void setPreJsonToast(String toastMessage) {
             this.preJsonToast = preJsonToast;
@@ -138,6 +146,7 @@ public class JsonFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            llSpinnerProgress.setVisibility(View.VISIBLE);
             publishProgress(10); //give some indication of progress
             if (preJsonToast != null) {
                 Toast.makeText(listener, preJsonToast, Toast.LENGTH_LONG).show();
@@ -242,6 +251,7 @@ public class JsonFragment extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
+            llSpinnerProgress.setVisibility(View.GONE);
 
             ListAdapter adapter = new JsonDeviceAdapter(listener); //get layout id
 
@@ -284,6 +294,7 @@ public class JsonFragment extends Fragment {
             if (progressBar != null) {
 
                 progressBar.setVisibility(View.INVISIBLE);
+
             }
         }
     }
