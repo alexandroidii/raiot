@@ -86,9 +86,9 @@ public class AddDeviceFragment extends Fragment {
                     newDevice.put(getString(R.string.deviceStatusKey), status);
 
                     if (deviceDatabaseHelper.addDevice(newDevice, listener)) {
-                        Toast.makeText(listener, "new Device Saved", Toast.LENGTH_LONG).show();
-                    } else {
                         Toast.makeText(listener, "Error saving new device", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(listener, "new Device Saved", Toast.LENGTH_LONG).show();
                     }
                 }
 
