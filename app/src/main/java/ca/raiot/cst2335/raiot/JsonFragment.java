@@ -2,6 +2,7 @@ package ca.raiot.cst2335.raiot;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class JsonFragment extends Fragment {
     private FragmentActivity listener;
 
     private DeviceDatabaseHelper deviceDatabaseHelper;
+    private String data;
 
     @Override
     public void onAttach(Context context) {
@@ -159,19 +161,27 @@ public class JsonFragment extends Fragment {
                         String location = hsd.getString("location");
                         String ref_id = hsd.getString("ref");
 
-//                        // tmp hash map for single device
-                        HashMap<String, String> device = new HashMap<>();
+                        Cursor cursor = deviceDatabaseHelper.getSelectedDevice(ref_id);
+                        if (cursor.moveToFirst()){
+                            continue;
+                        }
+                        cursor.close();
 
-//                        // adding each child node to HashMap key => value
-                        device.put("name", name);
-                        device.put("status", status);
-                        device.put("location", location);
-                        device.put("ref", ref_id);
-//                        // adding device to device list
-                        deviceList.add(device);
+
+                           // tmp hash map for single device
+                            HashMap<String, String> device = new HashMap<>();
+
+
+                          // adding each child node to HashMap key => value
+                            device.put("name", name);
+                            device.put("status", status);
+                            device.put("location", location);
+                            device.put("ref", ref_id);
+                          // adding device to device list
+                            deviceList.add(device);
+                        }
                         publishProgress(progress);
                         jsonProgress(progress);
-                    }
                 } catch (final JSONException e) {
                     Log.i(ACTIVITY_NAME, "Json parsing error: " + e.getMessage());
                     listener.runOnUiThread(new Runnable() {
