@@ -33,11 +33,12 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String SQL_DROP_ENTRIES = "drop table if exists " + TABLE_NAME;
 
-    public DeviceDatabaseHelper(Context context){
+    public DeviceDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION_NUM);
     }
 
-    @Override public void onCreate(SQLiteDatabase db) {
+    @Override
+    public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
         Log.i(ACTIVITY_NAME, "Calling onCreate()");
     }
@@ -50,7 +51,7 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
                 + " newVersion = " + newVersion);
     }
 
-    public boolean addDevice(HashMap<String,String> device, Context context) {
+    public boolean addDevice(HashMap<String, String> device, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_REF, device.get("ref"));
@@ -58,37 +59,42 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_LOCATION, device.get("location"));
         contentValues.put(KEY_STATUS, device.get("status"));
 
-        Log.i(ACTIVITY_NAME, "addData: Adding device " + device.get("name") + " to " + TABLE_NAME);
+        Log.i(ACTIVITY_NAME, "addDevice(): Adding device " + device.get("name") + " to " + TABLE_NAME);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
         //if date as inserted incorrectly it will return -1
-        if (result == -1) {
-            Toast.makeText(context, "Failed to save new device to database", Toast.LENGTH_LONG).show();
+        return result == -1;
 
-            return false;
-        } else {
-            Toast.makeText(context, "Succesfully saved new device to the database", Toast.LENGTH_LONG).show();
-
-            return true;
-        }
     }
 
-    public boolean updateDevice(HashMap<String,String> device, Context context){
+    public boolean updateDevice(HashMap<String, String> device, Context context) {
 
         // create method to update device's Name and Location but not the ref or Status.
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_REF, device.get("ref"));
+        contentValues.put(KEY_NAME, device.get("name"));
+        contentValues.put(KEY_LOCATION, device.get("location"));
+        contentValues.put(KEY_STATUS, device.get("status"));
 
-        return true;
+        long result = db.update(TABLE_NAME, contentValues, KEY_REF + "=" + device.get("ref"), null);
+
+
+        Log.i(ACTIVITY_NAME, "updateDevice(): updating device with ref " + device.get("ref") + " from " + TABLE_NAME);
+
+
+        return result == -1;
     }
 
     /* Returns all the devices from database
      * @return
-             */
+     */
     public Cursor getAllSavedDevices() {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME;
         Cursor data = db.rawQuery(query, null);
-        Log.i(ACTIVITY_NAME, "getAllSavedDevices: Fetching all device from " + TABLE_NAME);
+        Log.i(ACTIVITY_NAME, "getAllSavedDevices(): Fetching all device from " + TABLE_NAME);
         return data;
     }
 
@@ -97,21 +103,19 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
      */
     public Cursor getSelectedDevice(String REF) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + KEY_REF  + " = " + REF;
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + KEY_REF + " = " + REF;
         Cursor data = db.rawQuery(query, null);
-        Log.i(ACTIVITY_NAME, "getSelectedDevices: Fetching specific device " + REF + " from " + TABLE_NAME);
+        Log.i(ACTIVITY_NAME, "getSelectedDevices(): Fetching specific device " + REF + " from " + TABLE_NAME);
         return data;
     }
 
     /* Delete the selected device from database */
 
-    public void deleteDevice(String REF, Context context){
+    public void deleteDevice(String REF, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE " + KEY_REF  + " = " + REF;
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE " + KEY_REF + " = " + REF;
 //        Cursor data = db.rawQuery(query, null);
-        Log.i(ACTIVITY_NAME, "deleteDevice: Deleting device " + REF + " from " + TABLE_NAME);
+        Log.i(ACTIVITY_NAME, "deleteDevice(): Deleting device " + REF + " from " + TABLE_NAME);
         db.execSQL(query);
-        Toast.makeText(context, "Deleting device " + REF + " from " + TABLE_NAME, Toast.LENGTH_LONG).show();
-
     }
 }

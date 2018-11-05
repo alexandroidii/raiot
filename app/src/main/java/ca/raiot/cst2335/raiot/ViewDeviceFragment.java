@@ -81,15 +81,18 @@ public class ViewDeviceFragment extends Fragment {
                 // implement code to save fields to the database.
                 HashMap<String, String> updatedDevice = new HashMap<>();
 
-
+                Toast.makeText(listener, "Updating Device", Toast.LENGTH_SHORT).show();
 
                 updatedDevice.put("name", etViewDeviceName.getText().toString());
                 updatedDevice.put("ref", tvRefNumber.getText().toString());
                 updatedDevice.put("location", etViewLocation.getText().toString());
                 updatedDevice.put("status", status);
-                deviceDatabaseHelper.updateDevice(updatedDevice, listener);
+                if (deviceDatabaseHelper.updateDevice(updatedDevice, listener)) {
+                    Toast.makeText(listener, "Device successfully updated", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(listener, "Failed to update device", Toast.LENGTH_SHORT).show();
+                }
 
-                Toast.makeText(listener, "updating device in database", Toast.LENGTH_LONG).show();
 
                 //Robert, If there is a string we can send to the server to update the devices name and location we could use that here.
 

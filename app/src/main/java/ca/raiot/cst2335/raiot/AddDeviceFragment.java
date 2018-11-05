@@ -72,9 +72,12 @@ public class AddDeviceFragment extends Fragment {
                 newDevice.put(getString(R.string.deviceRefKey), etRefNumber.getText().toString());
                 newDevice.put(getString(R.string.deviceLocationKey), etLocation.getText().toString());
                 newDevice.put(getString(R.string.deviceStatusKey), etStatus.getText().toString());
-                deviceDatabaseHelper.addDevice(newDevice, listener);
+                if(deviceDatabaseHelper.addDevice(newDevice, listener)){
+                    Toast.makeText(listener, "new Device Saved", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(listener, "Error saving new device", Toast.LENGTH_LONG).show();
+                }
 
-                Toast.makeText(listener, "Saving new device to database", Toast.LENGTH_LONG).show();
 
             }
         });

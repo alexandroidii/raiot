@@ -60,8 +60,8 @@ public class DevicesFragment extends Fragment {
     private int progress;
     private ProgressBar progressBar;
 
-    private ArrayList<HashMap<String, String>> jsonDeviceList = new ArrayList<>();
-    private ArrayList<HashMap<String, String>> deviceList = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> jsonDeviceList;
+    private ArrayList<HashMap<String, String>> deviceList;
 
 
     public DevicesFragment() {
@@ -151,6 +151,8 @@ public class DevicesFragment extends Fragment {
 
         public DatabaseDeviceAdapter(Context ctx) {
             super(ctx, 0);
+
+            deviceList = new ArrayList<>();
             cursor = deviceDatabaseHelper.getAllSavedDevices();
             cursor.moveToFirst();
 
@@ -239,6 +241,7 @@ public class DevicesFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            jsonDeviceList = new ArrayList<>();
             llSpinnerProgress.setVisibility(View.VISIBLE);
             publishProgress(10); //give some indication of progress
             if (preJsonToast != null) {
@@ -358,7 +361,6 @@ public class DevicesFragment extends Fragment {
              *           confirming a delete of the device in the database.
              * */
 
-//       listView.setLongClickable(true);
 
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -371,12 +373,15 @@ public class DevicesFragment extends Fragment {
                             .setTitle("Delete Device?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialogInterface, int id) {
+
                                     deviceDatabaseHelper.deleteDevice(String.valueOf(deviceId), listener);
                                     listener.getSupportFragmentManager()
                                             .beginTransaction()
                                             .replace(R.id.frame_layout, new DevicesFragment())
                                             .addToBackStack(null)
                                             .commit();
+
+                                    Toast.makeText(listener, "Device Deleted", Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -394,10 +399,6 @@ public class DevicesFragment extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                   /*
-                    https://stackoverflow.com/questions/40295528/get-id-of-checkbox-inside-of-listview-item-in-onitemclick-listener
-                    */
-
 
                     HashMap<String, String> currentDevice = new HashMap<>();
 
@@ -405,7 +406,6 @@ public class DevicesFragment extends Fragment {
                     TextView status = (TextView) view.findViewById(R.id.status);
                     TextView location = (TextView) view.findViewById(R.id.location);
                     TextView ref = (TextView) view.findViewById(R.id.reference);
-                    CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
 
                     Bundle bundle = new Bundle();
                     bundle.putString("name", deviceName.getText().toString());

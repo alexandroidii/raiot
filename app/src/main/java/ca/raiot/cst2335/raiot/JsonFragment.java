@@ -105,19 +105,20 @@ public class JsonFragment extends Fragment {
             public void onClick(View view) {
 
                 if (saveDeviceList.size() > 0) {
-                    Toast.makeText(listener, "Saving new devices to database", Toast.LENGTH_LONG).show();
+                    Toast.makeText(listener, "Saving new devices to database", Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < saveDeviceList.size(); i++) {
                         deviceDatabaseHelper.addDevice(saveDeviceList.get(i), listener);
                     }
+                    Toast.makeText(listener, "Devices have been saved", Toast.LENGTH_SHORT).show();
+                    listener.getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.frame_layout, new DevicesFragment())
+                            .addToBackStack(null)
+                            .commit();
                 } else {
-                    Toast.makeText(listener, "No devices saved", Toast.LENGTH_LONG).show();
+                    Toast.makeText(listener, "Please select a device to save", Toast.LENGTH_LONG).show();
                 }
 
-                listener.getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.frame_layout, new DevicesFragment())
-                        .addToBackStack(null)
-                        .commit();
             }
         });
 
