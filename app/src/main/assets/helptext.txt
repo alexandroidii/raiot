@@ -4,6 +4,8 @@ RAIOT was built from the ground up to give users a better experience with contro
 
 When the application starts, it scans the IOT hub for devices to manage and control. It is assumed that the devices belong to a location specified as "Android".
 
+*NOte* When Scanning devices - this may take up to 20 seconds for the first occurrence.
+
 By pressing on the green "+" floating action button, two choices will be available - "Search Network - denoted by the magnify glass icon" and "Add Manually - denoted by the list icon".
 
 Search Network will issue a JSON request to the hub for devices which correspond to the given location - "Android" and a view will be generated for the user which includes a checkbox used to add to the local Sqlite database.
@@ -11,7 +13,9 @@ Search Network will issue a JSON request to the hub for devices which correspond
 As each item is selected in the view, the green "floppy disk icon" can then be selected to save the items in the Sqlite database.
 
 Should the user wish to add the devices manually, a dialog will be presented to the user where the specific information can be added manually. This option gives the user an opportunity to add the device as they wish.
-This means they can call the device any name that is desired. The only caveat is they must know the reference number of the device in the IOT hub for actual operational actions to take place.
+This means they can call the device any name that is desired.  The only caveat is they must know the reference number of the device in the IOT hub for actual operational actions to take place.
+One other benefit in this dialog is that the user may change the name of the device store locally which allows for a more personalized device naming.
+
 Below is the list of devices currently support in V1.0:
 
 Device Name         Reference Id
