@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class AddDeviceFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_device, container, false);
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -61,21 +63,33 @@ public class AddDeviceFragment extends Fragment {
         etStatus = (EditText) listener.findViewById(R.id.etStatus);
 
 
-
-
         saveDeviceFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 HashMap<String, String> newDevice = new HashMap<>();
 
-                newDevice.put(getString(R.string.deviceNameKey), etDeviceName.getText().toString());
-                newDevice.put(getString(R.string.deviceRefKey), etRefNumber.getText().toString());
-                newDevice.put(getString(R.string.deviceLocationKey), etLocation.getText().toString());
-                newDevice.put(getString(R.string.deviceStatusKey), etStatus.getText().toString());
-                if(deviceDatabaseHelper.addDevice(newDevice, listener)){
-                    Toast.makeText(listener, "new Device Saved", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(listener, "Error saving new device", Toast.LENGTH_LONG).show();
+                String deviceName = etDeviceName.getText().toString();
+                String refnumber = etRefNumber.getText().toString();
+                String location = etLocation.getText().toString();
+                String status = etStatus.getText().toString();
+
+
+                if (TextUtils.isEmpty(deviceName) ||
+                        TextUtils.isEmpty(refnumber) ||
+                        TextUtils.isEmpty(location) ||
+                        TextUtils.isEmpty(status)) {
+                    Toast.makeText(listener, "Please fill in the fields", Toast.LENGTH_LONG).show();
+                } else {
+                    newDevice.put(getString(R.string.deviceNameKey), deviceName);
+                    newDevice.put(getString(R.string.deviceRefKey), refnumber);
+                    newDevice.put(getString(R.string.deviceLocationKey), location);
+                    newDevice.put(getString(R.string.deviceStatusKey), status);
+
+                    if (deviceDatabaseHelper.addDevice(newDevice, listener)) {
+                        Toast.makeText(listener, "new Device Saved", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(listener, "Error saving new device", Toast.LENGTH_LONG).show();
+                    }
                 }
 
 

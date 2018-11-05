@@ -129,7 +129,8 @@ public class JsonFragment extends Fragment {
     public class GetDevices extends AsyncTask<String, Integer, String> {
 
         private String preJsonToast;
-        LinearLayout llSpinnerProgress = (LinearLayout)listener.findViewById(R.id.llSpinnerProgress);
+
+        LinearLayout llSpinnerProgress = (LinearLayout) listener.findViewById(R.id.llSpinnerProgress);
 
 
         public void setPreJsonToast(String toastMessage) {

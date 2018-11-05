@@ -164,6 +164,7 @@ public class DevicesFragment extends Fragment {
                 currentDevice.put("ref", cursor.getString(columnIndex++));
                 currentDevice.put("name", cursor.getString(columnIndex++));
                 currentDevice.put("location", cursor.getString(columnIndex++));
+                currentDevice.put("status",  cursor.getString(columnIndex++));
 
                 for (int i = 0; i < jsonDeviceList.size(); i++) {
                     if (currentDevice.get("ref").equals(jsonDeviceList.get(i).get("ref"))) {
