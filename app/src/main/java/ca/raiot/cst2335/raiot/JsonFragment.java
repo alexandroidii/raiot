@@ -84,11 +84,11 @@ public class JsonFragment extends Fragment {
         listview = (ListView) listener.findViewById(R.id.listView);
 
         /*
-        * Source: https://stackoverflow.com/questions/5565451/display-no-item-message-in-listview
-        * Author: Joseph Earl
-        * Date: 2011-04-06
-        *
-        * */
+         * Source: https://stackoverflow.com/questions/5565451/display-no-item-message-in-listview
+         * Author: Joseph Earl
+         * Date: 2011-04-06
+         *
+         * */
         View emptyJsonList = listener.findViewById(R.id.emptyJsonList);
         listview.setEmptyView(emptyJsonList);
 
@@ -147,7 +147,9 @@ public class JsonFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            llSpinnerProgress.setVisibility(View.VISIBLE);
+            if (llSpinnerProgress != null) {
+                llSpinnerProgress.setVisibility(View.VISIBLE);
+            }
             publishProgress(10); //give some indication of progress
             if (preJsonToast != null) {
                 Toast.makeText(listener, preJsonToast, Toast.LENGTH_LONG).show();
@@ -182,26 +184,27 @@ public class JsonFragment extends Fragment {
                         String ref_id = hsd.getString("ref");
 
                         Cursor cursor = deviceDatabaseHelper.getSelectedDevice(ref_id);
-                        if (cursor.moveToFirst()){
+                        if (cursor.moveToFirst()) {
+                            cursor.close();
                             continue;
                         }
                         cursor.close();
 
 
-                           // tmp hash map for single device
-                            HashMap<String, String> device = new HashMap<>();
+                        // tmp hash map for single device
+                        HashMap<String, String> device = new HashMap<>();
 
 
-                          // adding each child node to HashMap key => value
-                            device.put("name", name);
-                            device.put("status", status);
-                            device.put("location", location);
-                            device.put("ref", ref_id);
-                          // adding device to device list
-                            deviceList.add(device);
-                        }
-                        publishProgress(progress);
-                        jsonProgress(progress);
+                        // adding each child node to HashMap key => value
+                        device.put("name", name);
+                        device.put("status", status);
+                        device.put("location", location);
+                        device.put("ref", ref_id);
+                        // adding device to device list
+                        deviceList.add(device);
+                    }
+                    publishProgress(progress);
+                    jsonProgress(progress);
                 } catch (final JSONException e) {
                     Log.i(ACTIVITY_NAME, "Json parsing error: " + e.getMessage());
                     listener.runOnUiThread(new Runnable() {
@@ -252,7 +255,9 @@ public class JsonFragment extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            llSpinnerProgress.setVisibility(View.GONE);
+            if (llSpinnerProgress != null) {
+                llSpinnerProgress.setVisibility(View.GONE);
+            }
 
             ListAdapter adapter = new JsonDeviceAdapter(listener); //get layout id
 

@@ -17,7 +17,7 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
     protected static final String ACTIVITY_NAME = "1234 DeviceDatabaseHelper";
 
     private static final String DATABASE_NAME = "Devices.db";
-    private static final int VERSION_NUM = 2;
+    private static final int VERSION_NUM = 1;
     public static final String KEY_REF = "ref";
     public static final String KEY_NAME = "name";
     public static final String KEY_LOCATION = "location";
@@ -114,7 +114,6 @@ public class DeviceDatabaseHelper extends SQLiteOpenHelper {
     public void deleteDevice(String REF, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + TABLE_NAME + " WHERE " + KEY_REF + " = " + REF;
-//        Cursor data = db.rawQuery(query, null);
         Log.i(ACTIVITY_NAME, "deleteDevice(): Deleting device " + REF + " from " + TABLE_NAME);
         db.execSQL(query);
     }
