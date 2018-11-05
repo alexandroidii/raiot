@@ -4,7 +4,7 @@ RAIOT was built from the ground up to give users a better experience with contro
 
 When the application starts, it scans the IOT hub for devices to manage and control. It is assumed that the devices belong to a location specified as "Android".
 
-*NOte* When Scanning devices - this may take up to 20 seconds for the first occurrence.
+*NOTE* When Scanning devices - this may take up to 20 seconds for the first occurrence.
 
 By pressing on the green "+" floating action button, two choices will be available - "Search Network - denoted by the magnify glass icon" and "Add Manually - denoted by the list icon".
 
