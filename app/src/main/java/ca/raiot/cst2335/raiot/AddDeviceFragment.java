@@ -89,6 +89,11 @@ public class AddDeviceFragment extends Fragment {
                         Toast.makeText(listener, "Error saving new device", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(listener, "new Device Saved", Toast.LENGTH_LONG).show();
+                        // take us back to devhome
+                        listener.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.frame_layout, new DevicesFragment())
+                                .addToBackStack(null)
+                                .commit();
                     }
                 }
 
