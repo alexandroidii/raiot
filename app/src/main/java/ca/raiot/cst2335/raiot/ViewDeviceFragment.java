@@ -78,24 +78,9 @@ public class ViewDeviceFragment extends Fragment {
         updateDeviceFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // implement code to save fields to the database.
-                HashMap<String, String> updatedDevice = new HashMap<>();
 
-                Toast.makeText(listener, "Updating Device", Toast.LENGTH_SHORT).show();
-
-                updatedDevice.put("name", etViewDeviceName.getText().toString());
-                updatedDevice.put("ref", tvRefNumber.getText().toString());
-                updatedDevice.put("location", etViewLocation.getText().toString());
-                updatedDevice.put("status", status);
-                if (deviceDatabaseHelper.updateDevice(updatedDevice, listener)) {
-                    Toast.makeText(listener, "Failed to update device", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(listener, "Device successfully updated", Toast.LENGTH_SHORT).show();
-                }
-
-
-                //Robert, If there is a string we can send to the server to update the devices name and location we could use that here.
-
+            // call method to save state of device in db.
+                devHome();
             }
         });
 
@@ -115,13 +100,11 @@ public class ViewDeviceFragment extends Fragment {
                                                         JsonFragment jsonFragment = new JsonFragment(listener);
                                                         String state;
                                                         if (isChecked) {
-
                                                             state = "On";
-                                                            devHome();
+                                                            devHome();          //save state in db
                                                         } else {
                                                             state = "Off";
                                                             devHome();
-
                                                         }
                                                         JsonFragment.GetDevices jsonRequest = jsonFragment.new GetDevices("Changing status of light id " + ref + " to " + state + "... Please wait!");
                                                         jsonRequest.execute("https://connected2.homeseer.com/JSON?request=controldevicebylabel&ref=" + ref + "&label=" + state + "&user=robert@lange.ca&pass=Myeasslake$");
@@ -133,6 +116,21 @@ public class ViewDeviceFragment extends Fragment {
 
     // handle to direct back to device list after selection change
     private void devHome() {
+        // implement code to save fields to the database
+        HashMap<String, String> updatedDevice = new HashMap<>();
+
+        Toast.makeText(listener, "Updating Device", Toast.LENGTH_SHORT).show();
+
+        updatedDevice.put("name", etViewDeviceName.getText().toString());
+        updatedDevice.put("ref", tvRefNumber.getText().toString());
+        updatedDevice.put("location", etViewLocation.getText().toString());
+        updatedDevice.put("status", status);
+        if (deviceDatabaseHelper.updateDevice(updatedDevice, listener)) {
+            Toast.makeText(listener, "Failed to update device", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(listener, "Device successfully updated", Toast.LENGTH_SHORT).show();
+        }
+        //return to device homepage
         listener.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout, new DevicesFragment())
                 .addToBackStack(null)
