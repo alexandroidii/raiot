@@ -79,7 +79,7 @@ public class AddDeviceFragment extends Fragment {
                         TextUtils.isEmpty(refnumber) ||
                         TextUtils.isEmpty(location) ||
                         TextUtils.isEmpty(status)) {
-                    Snackbar snackbar = Snackbar.make(listener.findViewById(R.id.manualAddDeviceFAB),  snackBarSaveManual, Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(listener.findViewById(R.id.manualAddDevice),  snackBarSaveManual, Snackbar.LENGTH_LONG);
                     snackbar.show();
                 } else {
                     newDevice.put(getString(R.string.deviceNameKey), deviceName);
