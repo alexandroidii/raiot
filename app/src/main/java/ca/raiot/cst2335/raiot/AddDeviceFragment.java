@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -29,7 +30,7 @@ public class AddDeviceFragment extends Fragment {
     private EditText etRefNumber;
     private EditText etLocation;
     private EditText etStatus;
-
+    private String snackBarSaveManual = "Your manual device addition was saved was successful";
     public AddDeviceFragment() {
         // Required empty public constructor
     }
@@ -88,7 +89,9 @@ public class AddDeviceFragment extends Fragment {
                     if (deviceDatabaseHelper.addDevice(newDevice, listener)) {
                         Toast.makeText(listener, "Error saving new device", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(listener, "new Device Saved", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(listener, "new Device Saved", Toast.LENGTH_LONG).show();
+                        Snackbar snackbar = Snackbar.make(listener.findViewById(R.id.manualAddDeviceFAB),  snackBarSaveManual, Snackbar.LENGTH_LONG);
+                        snackbar.show();
                         // take us back to devhome
                         listener.getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.frame_layout, new DevicesFragment())
