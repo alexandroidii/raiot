@@ -30,7 +30,7 @@ public class AddDeviceFragment extends Fragment {
     private EditText etRefNumber;
     private EditText etLocation;
     private EditText etStatus;
-    private String snackBarSaveManual = "Your manual device addition was saved was successful";
+    private String snackBarSaveManual = "Please fill in all fields for manual device additions";
     public AddDeviceFragment() {
         // Required empty public constructor
     }
@@ -79,7 +79,8 @@ public class AddDeviceFragment extends Fragment {
                         TextUtils.isEmpty(refnumber) ||
                         TextUtils.isEmpty(location) ||
                         TextUtils.isEmpty(status)) {
-                    Toast.makeText(listener, "Please fill in the fields", Toast.LENGTH_LONG).show();
+                    Snackbar snackbar = Snackbar.make(listener.findViewById(R.id.manualAddDeviceFAB),  snackBarSaveManual, Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 } else {
                     newDevice.put(getString(R.string.deviceNameKey), deviceName);
                     newDevice.put(getString(R.string.deviceRefKey), refnumber);
@@ -89,9 +90,7 @@ public class AddDeviceFragment extends Fragment {
                     if (deviceDatabaseHelper.addDevice(newDevice, listener)) {
                         Toast.makeText(listener, "Error saving new device", Toast.LENGTH_LONG).show();
                     } else {
-                       // Toast.makeText(listener, "new Device Saved", Toast.LENGTH_LONG).show();
-                        Snackbar snackbar = Snackbar.make(listener.findViewById(R.id.manualAddDeviceFAB),  snackBarSaveManual, Snackbar.LENGTH_LONG);
-                        snackbar.show();
+                        Toast.makeText(listener, "new Device Saved", Toast.LENGTH_LONG).show();
                         // take us back to devhome
                         listener.getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.frame_layout, new DevicesFragment())
