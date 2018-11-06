@@ -12,10 +12,9 @@ Search Network will issue a request to the hub for devices which correspond to t
 
 By selecting the desired device checkbox in the view followed by the green "floppy disk icon", these selection(s) will be saved to the local Sqlite database. Once the save is completed, it will return to the device home page.
 
-The greyed "Devices Home icon" on the base bar can be then selected to view the list of devices saved at any time.  Additonally, this selection  brings up or refreshes a view displaying the details of any locally known devices
-with Device Name, Reference Number of device, Location and Status. The Status field lists the last state of the device - "On" or "Off".
+The greyed "Devices Home icon" on the base bar can be used to view the list of devices saved at any time.  Additonally, this selection  brings up or refreshes a view displaying the details of any locally known devices with Device Name, Reference Number of device, Location and Status. The Status field lists the last state of the device - "On" or "Off".
 
-*NOTE* For testing purposes, only four devices have been made available to the application from the IOT hub. If viewing device home screen all four are listed, then any scanning of the IOT hub thereafter will not return any new devices to add.
+*NOTE* For testing purposes, only four devices have been made available to the application from the IOT hub. If viewing device home screen and all four are listed, then any subsequent scanning of the IOT hub thereafter will not return any new devices to add.
 However, if a device is removed, then rescanning will yeild a new device.
 
 If there are recorded devices in the "Devices" screen, the user may elect to remove the device from the local database by long pressing the device. A dialog will appear asking the user if they wish to remove the device from the local database.
@@ -23,7 +22,7 @@ Select "Yes" removes the device and persists this change to the database. Select
 
 Should the user wish to add the devices manually, a dialog will be presented to the user where the specific information can be added manually. This option gives the user an opportunity to add the device as they wish.
 This means they can call the device any name that is desired from the start.  The only caveat is they must know the reference number of the device in the IOT hub for actual operational actions to take place.
-One other benefit in this dialog is that the user may change the name of the device store locally which allows for a more personalized device naming.
+
 
 Below is the list of devices currently support in V1.0:
 
@@ -35,6 +34,8 @@ FamilyRoom Light    991
 Kitchen Light             992
 
 This application is heavily reliant on JSON GET requests for both scanning and controlling devices.
+
+Future releases of this application will incorporate device Schedulling and Automation.
 
 Authors:
 
