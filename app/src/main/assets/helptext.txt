@@ -2,18 +2,27 @@ Welcome to RAIOT V1.0 - Robert, Alexander Internet Of Things.
 
 RAIOT was built from the ground up to give users a better experience with controlling their Internet of Things devices.
 
-When the application starts, it scans the IOT hub for devices to manage and control. It is assumed that the devices belong to a location specified as "Android".
+When the application starts, it scans the local database for known devices to manage and control. If nothing shows up then the devices need to be added for management from the IOT hub.
 
-*NOTE* When Scanning devices - this may take up to 20 seconds for the first occurrence.
+This can be accomplished in two ways: (1) by scanning (searching) the IOT hub for available devices and (2) by adding the devices manually.
 
-By pressing on the green "+" floating action button, two choices will be available - "Search Network - denoted by the magnify glass icon" and "Add Manually - denoted by the list icon".
+By pressing on the green "+" floating action button, those two choices will be made available - "Search Network - denoted by the magnify glass icon" and "Add Manually - denoted by the list icon".
 
-Search Network will issue a JSON request to the hub for devices which correspond to the given location - "Android" and a view will be generated for the user which includes a checkbox used to add to the local Sqlite database.
+Search Network will issue a request to the hub for devices which correspond to the given location - "Android" and a view will be generated for the user of available devices to add to the local Sqlite database.
 
-As each item is selected in the view, the green "floppy disk icon" can then be selected to save the items in the Sqlite database.
+By selecting the desired device checkbox in the view followed by the green "floppy disk icon", these selection(s) will be saved to the local Sqlite database. Once the save is completed, it will return to the device home page.
+
+The greyed "Devices Home icon" on the base bar can be then selected to view the list of devices saved at any time.  Additonally, this selection  brings up or refreshes a view displaying the details of any locally known devices
+with Device Name, Reference Number of device, Location and Status. The Status field lists the last state of the device - "On" or "Off".
+
+*NOTE* For testing purposes, only four devices have been made available to the application from the IOT hub. If viewing device home screen all four are listed, then any scanning of the IOT hub thereafter will not return any new devices to add.
+However, if a device is removed, then rescanning will yeild a new device.
+
+If there are recorded devices in the "Devices" screen, the user may elect to remove the device from the local database by long pressing the device. A dialog will appear asking the user if they wish to remove the device from the local database.
+Select "Yes" removes the device and persists this change to the database. Selecting no dismisses the pop up confirmation and the device view is retained.
 
 Should the user wish to add the devices manually, a dialog will be presented to the user where the specific information can be added manually. This option gives the user an opportunity to add the device as they wish.
-This means they can call the device any name that is desired.  The only caveat is they must know the reference number of the device in the IOT hub for actual operational actions to take place.
+This means they can call the device any name that is desired from the start.  The only caveat is they must know the reference number of the device in the IOT hub for actual operational actions to take place.
 One other benefit in this dialog is that the user may change the name of the device store locally which allows for a more personalized device naming.
 
 Below is the list of devices currently support in V1.0:
@@ -25,10 +34,7 @@ LivingRoom Light     989
 FamilyRoom Light    991
 Kitchen Light             992
 
-The greyed "Devices icon" on the base bar can be then selected to view the list of devices saved. With this view, by selected any particular device in the list allows the user to control the device.
-This selection brings up a view displaying the details of the device - Device Name, Reference Number of device, Location and status. The status icon acts as a slide switch which allows the user to turn on/off the device.
-While in the "Devices" screen, the user may elect to remove the device from the local database by long pressing the device. A dialog will appear as the user if they wish to remove the device from the local database.
-Select "Yes" removes the device. Selecting no dismisses the pop up confirmation and the device view is retained.
+This application is heavily reliant on JSON GET requests for both scanning and controlling devices.
 
 Authors:
 
