@@ -337,7 +337,7 @@ public class JsonFragment extends Fragment {
 
             LayoutInflater inflater = listener.getLayoutInflater();
 
-            View adapterViewLayout = inflater.inflate(R.layout.adapter_view_json_ayout, null);
+            View adapterViewLayout = inflater.inflate(R.layout.adapter_view_json_layout, null);
 
             HashMap<String, String> currentDevice = deviceList.get(position);
 
