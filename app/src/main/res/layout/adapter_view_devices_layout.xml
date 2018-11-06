@@ -20,7 +20,7 @@
         android:layout_marginBottom="8dp"
         android:layout_weight="40"
         android:gravity="start"
-        android:text="device"
+        android:text="@string/deviceName"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="@+id/referenceLabel"
         app:layout_constraintStart_toEndOf="@+id/checkBox"
@@ -34,7 +34,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="start"
-        android:text="status"
+        android:text="@string/deviceStatus"
         android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toEndOf="@+id/referenceLabel"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,7 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="location"
+        android:text="@string/deviceLocation"
         app:layout_constraintStart_toStartOf="@+id/status"
         app:layout_constraintTop_toBottomOf="@+id/status" />
 
@@ -53,7 +53,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="ref"
+        android:text="@string/deviceRef"
         app:layout_constraintStart_toStartOf="@+id/status"
         app:layout_constraintTop_toBottomOf="@+id/location" />
 
@@ -64,7 +64,7 @@
         android:layout_marginStart="56dp"
         android:layout_marginTop="8dp"
         android:gravity="start"
-        android:text="Status"
+        android:text="@string/deviceStatus"
         app:layout_constraintStart_toEndOf="@+id/deviceName"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="Location"
+        android:text="@string/deviceLocation"
         app:layout_constraintStart_toStartOf="@+id/statusLabel"
         app:layout_constraintTop_toBottomOf="@+id/statusLabel" />
 
@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="Reference"
+        android:text="@string/deviceRef"
         app:layout_constraintStart_toStartOf="@+id/statusLabel"
         app:layout_constraintTop_toBottomOf="@+id/locationLabel" />
 

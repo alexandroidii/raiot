@@ -8,10 +8,15 @@
     <string name="title_automation">Automation</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragmentUnderConstruction">Come back in a future release to see this functionality.</string>
     <string name="emptyDbList">Click on the + button to add a device</string>
     <string name="emptyJsonList">There are no new devices to add</string>
     <string name="deviceNameKey">name</string>
+    <string name="deviceName">Device Name</string>
     <string name="deviceRefKey">ref</string>
+    <string name="deviceRef">Reference ID</string>
     <string name="deviceLocationKey">location</string>
+    <string name="deviceLocation">Location</string>
     <string name="deviceStatusKey">status</string>
+    <string name="deviceStatus">Status</string>
 </resources>
