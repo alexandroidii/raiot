@@ -27,7 +27,7 @@ public class ViewDeviceFragment extends Fragment {
     private EditText etViewDeviceName;
     private TextView tvRefNumber;
     private EditText etViewLocation;
-    private Switch statusSwitch;
+    private Switch statusSwitch; //status string for switch change
     String swState;
 
 
