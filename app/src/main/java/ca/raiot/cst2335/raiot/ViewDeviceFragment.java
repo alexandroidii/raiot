@@ -28,6 +28,7 @@ public class ViewDeviceFragment extends Fragment {
     private TextView tvRefNumber;
     private EditText etViewLocation;
     private Switch statusSwitch;
+    String swState;
 
 
     @Override
@@ -80,7 +81,7 @@ public class ViewDeviceFragment extends Fragment {
             public void onClick(View view) {
 
             // call method to save state of device in db.
-                devHome();
+                devHome(status);
             }
         });
 
@@ -98,16 +99,15 @@ public class ViewDeviceFragment extends Fragment {
                                                     @Override
                                                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                                                         JsonFragment jsonFragment = new JsonFragment(listener);
-                                                        String state;
                                                         if (isChecked) {
-                                                            state = "On";
-                                                            devHome();          //save state in db
+                                                            swState = "On";
+                                                            devHome(swState);          //save state in db
                                                         } else {
-                                                            state = "Off";
-                                                            devHome();
+                                                            swState = "Off";
+                                                            devHome(swState);
                                                         }
-                                                        JsonFragment.GetDevices jsonRequest = jsonFragment.new GetDevices("Changing status of light id " + ref + " to " + state + "... Please wait!");
-                                                        jsonRequest.execute("https://connected2.homeseer.com/JSON?request=controldevicebylabel&ref=" + ref + "&label=" + state + "&user=robert@lange.ca&pass=Myeasslake$");
+                                                        JsonFragment.GetDevices jsonRequest = jsonFragment.new GetDevices("Changing status of light id " + ref + " to " + swState + "... Please wait!");
+                                                        jsonRequest.execute("https://connected2.homeseer.com/JSON?request=controldevicebylabel&ref=" + ref + "&label=" + swState + "&user=robert@lange.ca&pass=Myeasslake$");
 
                                                     }
                                                 }
@@ -115,7 +115,7 @@ public class ViewDeviceFragment extends Fragment {
     }
 
     // handle to direct back to device list after selection change
-    private void devHome() {
+    private void devHome(String state) {
         // implement code to save fields to the database
         HashMap<String, String> updatedDevice = new HashMap<>();
 
@@ -124,7 +124,7 @@ public class ViewDeviceFragment extends Fragment {
         updatedDevice.put("name", etViewDeviceName.getText().toString());
         updatedDevice.put("ref", tvRefNumber.getText().toString());
         updatedDevice.put("location", etViewLocation.getText().toString());
-        updatedDevice.put("status", status);
+        updatedDevice.put("status", state);
         if (deviceDatabaseHelper.updateDevice(updatedDevice, listener)) {
             Toast.makeText(listener, "Failed to update device", Toast.LENGTH_SHORT).show();
         } else {
